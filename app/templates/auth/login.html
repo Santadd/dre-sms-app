@@ -1,0 +1,98 @@
+{% extends 'includes/auth_layout.html' %}
+{% block content %}
+<div class="login-bg h-100">
+    <div class="container h-100">
+        <div class="row justify-content-center h-100">
+            <div class="col-xl-6">
+                <div class="form-input-content login-form">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="logo text-center">
+                                <a href="index.html">
+                                    <img src="{{ url_for('static', filename='assets/images/f-logo.png') }}" alt="">
+                                </a>
+                            </div>
+                            <h4 class="text-center mt-4">Log into Your Account</h4>
+                            <form class="mt-5 mb-5" method="POST">
+                                {{ form.csrf_token }}
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    {% if form.email.errors %}
+                                    <div class="input-group input-danger">
+                                        {{ form.email(class="form-control is-invalid", placeholder="example@user.com") }}
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-transparent"> 
+                                                <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                            </span>
+                                        </div>
+                                        {% for error in form.email.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    {% else %}
+                                    {{ form.email(class="form-control", placeholder="example@user.com") }}
+                                    {% endif %}
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    
+                                    {% if form.password.errors %}
+                                    <div class="input-group input-danger">
+                                        {{ form.password(class="form-control is-invalid", placeholder="password") }}
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-transparent"> 
+                                                <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                            </span>
+                                        </div>
+                                        {% for error in form.password.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.password(class="form-control", placeholder="password") }}
+                                    {% endif %}
+                                    
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <div class="form-check p-l-0">
+                                            {{ form.remember_me(class="form-check-input") }}                                            
+                                            <label class="form-check-label ml-3" for="basic_checkbox_1">Check me
+                                                out</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6 text-right"><a href="javascript:void()">Forgot
+                                            Password?</a>
+                                    </div>
+                                </div>
+                                <div class="text-center mb-4 mt-4">
+                                    {{ form.submit(class="btn btn-primary") }}
+                                </div>
+                            </form>
+                            <div class="text-center">
+                                <h5 class="mb-5">Or with Login</h5>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item m-t-10"><a href="javascript:void()"
+                                            class="btn btn-facebook"><i class="fa fa-facebook"></i></a>
+                                    </li>
+                                    <li class="list-inline-item m-t-10"><a href="javascript:void()"
+                                            class="btn btn-twitter"><i class="fa fa-twitter"></i></a>
+                                    </li>
+                                    <li class="list-inline-item m-t-10"><a href="javascript:void()"
+                                            class="btn btn-linkedin"><i class="fa fa-linkedin"></i></a>
+                                    </li>
+                                    <li class="list-inline-item m-t-10"><a href="javascript:void()"
+                                            class="btn btn-google-plus"><i class="fa fa-google-plus"></i></a>
+                                    </li>
+                                </ul>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

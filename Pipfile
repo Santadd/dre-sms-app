@@ -11,6 +11,7 @@ flask-wtf = "*"
 flask-mail = "*"
 flask-migrate = "*"
 pymysql = "*"
+email-validator = "*"
 
 [dev-packages]
 
