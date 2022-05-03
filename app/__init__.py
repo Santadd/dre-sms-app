@@ -20,7 +20,11 @@ def create_app(config_name):
     db.init_app(app)
     mail.init_app(app)
     
+    #Attach Blueprints
+    from app.admin import admin as admin_blueprint
     
+    #Register Blueprints
+    app.register_blueprint(admin_blueprint, url_prefix='/admin')
     
     #Return application factory
     return app
