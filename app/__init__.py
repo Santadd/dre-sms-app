@@ -22,9 +22,12 @@ def create_app(config_name):
     
     #Attach Blueprints
     from app.admin import admin as admin_blueprint
+    from app.main import main as main_blueprint
+    
     
     #Register Blueprints
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
+    app.register_blueprint(main_blueprint)
     
     #Return application factory
     return app
