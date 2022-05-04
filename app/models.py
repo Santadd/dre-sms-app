@@ -4,6 +4,8 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login_manager
+import random
+import string
 
 #Define the user loader function
 @login_manager.user_loader
@@ -18,7 +20,8 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(80), nullable=False)
     mid_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80), nullable=False)
-    username = db.Column(db.String(80), nullable=False)
+    username = db.Column(db.String(80), nullable=False, 
+                         default=''.join(random.sample(string.ascii_lowercase, k=10)))
     email = db.Column(db.String(80), nullable=False)
     password_hash = db.Column(db.String(120))
     confirmed = db.Column(db.Boolean, default=False)
