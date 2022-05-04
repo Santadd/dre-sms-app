@@ -5,9 +5,11 @@ from app.admin import admin
 from app.admin.forms import StudentAdmissionForm, UserRegistrationForm
 from app.models import Student, User
 from app.auth.utils.email import send_email
+from app.auth.utils.decorators import permission_required, admin_required
 
 @admin.route('/dashboard')
 @login_required
+@admin_required
 def admin_dashboard():
     return render_template('admin/index.html', title='Main Dashboard') 
 
