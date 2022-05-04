@@ -2,7 +2,7 @@ from flask import current_app
 from app import db 
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from app import login_manager
 import random
 import string
@@ -11,6 +11,73 @@ import string
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+
+"""Define Permission Class. Specify the type of permissions that can be performed"""
+class Permission:
+    READ = 1
+    EDIT = 2
+    MODERATE = 4
+    ADMIN = 8
+    
+    
+
+#Define Role Model
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
+    users = db.relationship('User', backref='role', lazy='dynamic')
+    
+    #Set permissions filed to 0 if initial value isnt provided.
+    def __init__(self, **kwargs):
+        super(Role, self).__init__(**kwargs)
+        if self.permissions is None:
+            self.permissions = 0
+            
+    """Define new methods to manage permissions. This is dependent on the permission constants"""
+    def add_permission(self, perm):
+        if not self.has_permission(perm):
+            self.permissions += perm
+
+    def remove_permission(self, perm):
+        if self.has_permission(perm):
+            self.permissions -= perm
+
+    def reset_permissions(self):
+        self.permissions = 0
+
+    def has_permission(self, perm):
+        return self.permissions & perm == perm
+    
+    #Create a static method that add roles to the Role class.
+    @staticmethod
+    def insert_roles():
+        roles = {
+            'Student': [Permission.READ, Permission.EDIT],
+            'Teacher': [Permission.READ, Permission.EDIT, Permission.MODERATE],
+            'Administrator': [Permission.READ, Permission.EDIT,
+                              Permission.MODERATE, Permission.ADMIN],
+        }
+        default_role = 'Student'
+        for r in roles:
+            role = Role.query.filter_by(name=r).first()
+            if role is None:
+                role = Role(name=r)
+            role.reset_permissions()
+            for perm in roles[r]:
+                role.add_permission(perm)
+            role.default = (role.name == default_role)
+            db.session.add(role)
+        db.session.commit() 
+            
+    def __repr__(self):
+        return '<Role %r>' % self.name
+    
+    
 
 
 class User(UserMixin, db.Model):
@@ -22,9 +89,21 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), nullable=False, 
                          default=''.join(random.sample(string.ascii_lowercase, k=10)))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     email = db.Column(db.String(80), nullable=False)
     password_hash = db.Column(db.String(120))
     confirmed = db.Column(db.Boolean, default=False)
+    
+    """Define a default role upon registration, only exception is administrator
+        whose role is assigned from the start.
+    """
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.role is None:
+            if self.email == current_app.config['SMS_ADMIN']:
+                self.role = Role.query.filter_by(name='Administrator').first()
+            if self.role is None:
+                self.role = Role.query.filter_by(default=True).first()
     
     #Define property for password. Make it write-only to prevent original password from being read
     @property
@@ -59,5 +138,24 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
     
+    """ Define a helper method to check whether users have a given 
+        permission in the role the have been assigned
+    """
+    def can(self, perm):
+        return self.role is not None and self.role.has_permission(perm)
+
+    def is_administrator(self):
+        return self.can(Permission.ADMIN)
+    
     def __repr__(self):
-        return "<Users %r>" %self.username
+        return "<User %r>" %self.username
+ 
+#Anonymous User class that implements the can() and is_administrator() methods   
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+
+    def is_administrator(self):
+        return False
+
+login_manager.anonymous_user = AnonymousUser
