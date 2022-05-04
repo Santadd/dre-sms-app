@@ -1,4 +1,6 @@
+from flask import current_app
 from app import db 
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login_manager
@@ -19,7 +21,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(80), nullable=False)
     password_hash = db.Column(db.String(120))
-    
+    confirmed = db.Column(db.Boolean, default=False)
     
     #Define property for password. Make it write-only to prevent original password from being read
     @property
@@ -34,6 +36,25 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
     
+    #Generating Confirmation Tokens with itsdangerous
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id}).decode('utf-8')
+    
+    #Confirm Toke
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        #Load token
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        #Check if the id from token matches the loggen-in user
+        if data.get('confirm') != self.id:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        return True
     
     def __repr__(self):
         return "<Users %r>" %self.username
