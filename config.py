@@ -11,8 +11,8 @@ class Config:
                                   ['true', 'on', '1']
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    SMS_MAIL_SUBJECT_PREFIX = '[Santa School Management System]'
-    SMS_MAIL_SENDER = 'Santa SMS <santasms@email.com>'
+    SMS_MAIL_SUBJECT_PREFIX = '[DRE School Management System]'
+    SMS_MAIL_SENDER = 'DRE-SMS <dresms@email.com>'
     SMS_ADMIN = os.environ.get('SMS_ADMIN')
     
     

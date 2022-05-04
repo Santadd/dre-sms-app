@@ -1,11 +1,12 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, SubmitField
-from wtforms.validators import InputRequired, Email, Length
+from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
+from app.models import User
 
 
 #Create Student Admission Form
 class StudentAdmissionForm(FlaskForm):
-    first_name = StringField('First Name', validators=[InputRequired(), Length(min=3)])
+    first_name = StringField('First Name', validators=[InputRequired()])
     last_name = StringField('Last Name', validators=[InputRequired()])
     mid_name = StringField('Middle Name')
     email = StringField('Email', validators=[Email(), InputRequired()])
@@ -32,3 +33,24 @@ class StudentAdmissionForm(FlaskForm):
     permanent_add = TextAreaField('Permanent Address')
     
     submit = SubmitField('Submit')
+    
+class UserRegistrationForm(FlaskForm):
+    first_name = StringField('First Name', validators=[InputRequired()])
+    last_name = StringField('Last Name', validators=[InputRequired()])
+    mid_name = StringField('Middle Name')
+    username = StringField('Username', validators=[InputRequired()])
+    email = StringField('Email', validators=[Email(), InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=8)])
+    confirm_password = PasswordField('Confirm Password', 
+                                     validators=[InputRequired(), Length(min=8), 
+                                    EqualTo('password', message="Passwords must match")])
+    
+    submit = SubmitField('Register')
+    
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data.lower()).first():
+            raise ValidationError('Email already registered.')
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError('Username already in use.')

@@ -1,14 +1,17 @@
 from flask import redirect, render_template, url_for, request, flash
 from app import db
+from flask_login import current_user, login_required
 from app.admin import admin
-from app.admin.forms import StudentAdmissionForm
+from app.admin.forms import StudentAdmissionForm, UserRegistrationForm
 from app.models import Student, User
+from app.auth.utils.email import send_email
 
 @admin.route('/dashboard')
 def admin_dashboard():
     return render_template('admin/index.html', title='Main Dashboard') 
 
 
+#Register Students
 @admin.route('/add_student', methods=['GET', 'POST'])
 def add_student():
     form = StudentAdmissionForm()
@@ -56,3 +59,36 @@ def add_student():
         return redirect(url_for('admin.add_student'))
     return render_template('admin/add_student.html', title='Add Student Page', form=form)
 
+#Add Users
+@admin.route('/register_user', methods=["GET", "POST"])
+def register_user():
+    form = UserRegistrationForm()
+    if form.validate_on_submit():
+        #Add new user to database
+        user = User(first_name=form.first_name.data, last_name=form.last_name.data, 
+                    mid_name=form.mid_name.data, username=form.username.data, email=form.email.data,
+                    password=form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        #Generate user token
+        token = user.generate_confirmation_token()
+        #Send confirmation email to user
+        send_email(user.email, 'Confirm Your Account',
+                   'auth/email/user_confirm', user=user, token=token)
+        flash("User account has been created successfully. \
+                Account confirmation email has been via by email.", "success")
+        return redirect(url_for('admin.register_user'))
+    return render_template('admin/register_user.html', title='Register User', form=form)
+
+#Confirm User Account
+@admin.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('admin.admin_dashboard'))
+    if current_user.confirm(token):
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!')
+    else:
+        flash('The confirmation link is invalid or has expired.')
+    return redirect(url_for('admin.admin_dashboard'))
