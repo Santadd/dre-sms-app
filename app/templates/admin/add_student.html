@@ -1,5 +1,6 @@
 {% extends 'includes/admin_dashboard_layout.html' %}
 {% block content %}
+
 <div class="content-body">
     <div class="container-fluid">
         <div class="row page-titles">
@@ -20,6 +21,7 @@
 
         <div class="row">
             <div class="col-lg-12">
+                {% include "includes/messages.html" %}
                 <div class="card forms-card">
                     <div class="card-body">
                         <h4 class="card-title mb-4">Add Student Form</h4>

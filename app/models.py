@@ -87,12 +87,19 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(80), nullable=False)
     mid_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80), nullable=False)
+    type = db.Column(db.String(50))
     username = db.Column(db.String(80), nullable=False, 
                          default=''.join(random.sample(string.ascii_lowercase, k=10)))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     email = db.Column(db.String(80), nullable=False)
     password_hash = db.Column(db.String(120))
     confirmed = db.Column(db.Boolean, default=False)
+    
+    __mapper_args__ = {
+        'polymorphic_identity': 'users',
+        'with_polymorphic': '*',
+        "polymorphic_on": type
+    }
     
     """Define a default role upon registration, only exception is administrator
         whose role is assigned from the start.
@@ -159,3 +166,39 @@ class AnonymousUser(AnonymousUserMixin):
         return False
 
 login_manager.anonymous_user = AnonymousUser
+
+#Create Student Model
+class Student(User):  
+    __tablename__ = 'student'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    reg_date = db.Column(db.String(80))
+    course = db.Column(db.String(80))
+    mobile_no = db.Column(db.String(80))
+    gender = db.Column(db.String(80))
+    admission_no = db.Column(db.String(80))
+    birth_date = db.Column(db.String(80))
+    student_id = db.Column(db.String(80), index=True)
+    student_class = db.Column(db.String(80))
+    department = db.Column(db.String(80))
+    religion = db.Column(db.String(80))
+    nationality = db.Column(db.String(80))
+    father_name = db.Column(db.String(80))
+    mother_name = db.Column(db.String(80))
+    father_occ = db.Column(db.String(80))
+    mother_occ = db.Column(db.String(80))
+    father_email = db.Column(db.String(80))
+    mother_email = db.Column(db.String(80))
+    father_mobile_no = db.Column(db.String(80))
+    mother_mobile_no = db.Column(db.String(80))
+    present_add = db.Column(db.Text)
+    permanent_add = db.Column(db.Text)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'student',
+        'with_polymorphic': '*'
+    }
+    
+    
+    def __repr__(self):
+        return "<Student %r>" %self.student_id
