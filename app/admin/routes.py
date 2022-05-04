@@ -7,12 +7,14 @@ from app.models import Student, User
 from app.auth.utils.email import send_email
 
 @admin.route('/dashboard')
+@login_required
 def admin_dashboard():
     return render_template('admin/index.html', title='Main Dashboard') 
 
 
 #Register Students
 @admin.route('/add_student', methods=['GET', 'POST'])
+@login_required
 def add_student():
     form = StudentAdmissionForm()
     if form.validate_on_submit():
@@ -73,7 +75,7 @@ def register_user():
         #Generate user token
         token = user.generate_confirmation_token()
         #Send confirmation email to user
-        send_email(user.email, 'Confirm Your Account',
+        send_email(user.email, ' Confirm Your Account',
                    'auth/email/user_confirm', user=user, token=token)
         flash("User account has been created successfully. \
                 Account confirmation email has been via by email.", "success")

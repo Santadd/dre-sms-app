@@ -5,6 +5,7 @@
         <div class="row justify-content-center h-100">
             <div class="col-xl-6">
                 <div class="form-input-content login-form">
+                    {% include "includes/messages.html" %}
                     <div class="card">
                         <div class="card-body">
                             <div class="logo text-center">
@@ -63,8 +64,10 @@
                                                 out</label>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-6 text-right"><a href="javascript:void()">Forgot
-                                            Password?</a>
+                                    <div class="form-group col-md-6 text-right">
+                                        <a href="{{ url_for('auth.password_reset_request') }}">
+                                            Forgot Password?
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="text-center mb-4 mt-4">

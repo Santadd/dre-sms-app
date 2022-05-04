@@ -11,6 +11,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 #Set the login view page
 login_manager.login_view = 'auth.login'
+login_manager.login_message_category = 'warning'
 
 #Create factory application for the app
 def create_app(config_name):
