@@ -220,3 +220,27 @@ class Student(User):
     
     def __repr__(self):
         return "<Student %r>" %self.student_id
+    
+#Create Teacher Model
+class Teacher(User):  
+    __tablename__ = 'teachers'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    join_date = db.Column(db.String(80))
+    course = db.Column(db.String(80))
+    mobile_no = db.Column(db.String(80))
+    gender = db.Column(db.String(80))
+    birth_date = db.Column(db.String(80))
+    teacher_id = db.Column(db.String(80), index=True)
+    department = db.Column(db.String(80))
+    nationality = db.Column(db.String(80))
+    permanent_add = db.Column(db.Text)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'teacher',
+        'with_polymorphic': '*'
+    }
+    
+    
+    def __repr__(self):
+        return "<Teacher %r>" %self.teacher_id

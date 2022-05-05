@@ -34,6 +34,33 @@ class StudentAdmissionForm(FlaskForm):
     
     submit = SubmitField('Submit')
     
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data.lower()).first():
+            raise ValidationError('Email already registered.')
+        
+#Create Teacher Admission Form
+class TeacherAdmissionForm(FlaskForm):
+    first_name = StringField('First Name', validators=[InputRequired()])
+    last_name = StringField('Last Name', validators=[InputRequired()])
+    mid_name = StringField('Middle Name')
+    email = StringField('Email', validators=[Email(), InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
+    join_date = StringField('Joining Date')
+    course = StringField('Course', validators=[InputRequired()])
+    mobile_no = StringField('Mobile Number')
+    birth_date = StringField('Birth Date', validators=[InputRequired()])
+    teacher_id = StringField('Teacher ID', validators=[InputRequired()])
+    department = StringField('Department', validators=[InputRequired()])
+    nationality = StringField('Nationality')
+    permanent_add = TextAreaField('Permanent Address')
+    
+    submit = SubmitField('Submit')
+    
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data.lower()).first():
+            raise ValidationError('Email already registered.')
+
+#Register User    
 class UserRegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[InputRequired()])
     last_name = StringField('Last Name', validators=[InputRequired()])

@@ -33,8 +33,8 @@ class UserModelTestCase(unittest.TestCase):
         self.assertFalse(u.verify_password('dog'))
         
     def test_password_salts_are_random(self):
-        u = User(password='cat')
-        u2 = User(password='cat')
+        u = User(password='cat', email='santa@email.com', first_name='Abc', last_name='cde', username='buye')
+        u2 = User(password='cat', email='sa@email.com', first_name='Abc', last_name='cde', username='ye')
         self.assertTrue(u.password_hash != u2.password_hash)
         
     def test_valid_confirmation_token(self):

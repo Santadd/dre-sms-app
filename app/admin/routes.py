@@ -2,8 +2,8 @@ from flask import redirect, render_template, url_for, request, flash
 from app import db
 from flask_login import current_user, login_required
 from app.admin import admin
-from app.admin.forms import StudentAdmissionForm, UserRegistrationForm
-from app.models import Student, User
+from app.admin.forms import StudentAdmissionForm, UserRegistrationForm, TeacherAdmissionForm
+from app.models import Student, User, Teacher
 from app.auth.utils.email import send_email
 from app.auth.utils.decorators import permission_required, admin_required
 
@@ -62,6 +62,39 @@ def add_student():
         flash("Student details has been successfully added.", "success")
         return redirect(url_for('admin.add_student'))
     return render_template('admin/add_student.html', title='Add Student Page', form=form)
+
+
+#Register Teachers
+@admin.route('/add_teacher', methods=['GET', 'POST'])
+@login_required
+def add_teacher():
+    form = TeacherAdmissionForm()
+    if form.validate_on_submit():
+        #Obtain teachers details
+        first_name = form.first_name.data
+        email = form.email.data
+        last_name = form.last_name.data
+        mid_name = form.mid_name.data
+        join_date = form.join_date.data
+        course = form.course.data
+        password = form.password.data
+        mobile_no = form.mobile_no.data
+        birth_date = form.birth_date.data
+        teacher_id = form.teacher_id.data
+        department = form.department.data
+        nationality = form.nationality.data
+        permanent_add = form.permanent_add.data
+        gender = request.form.get('gender')
+        #Create a teacher instance and add details to database
+        teacher = Teacher(first_name=first_name, last_name=last_name, mid_name=mid_name, join_date=join_date,
+                          course=course, email=email, password=password, mobile_no=mobile_no, gender=gender,
+                          birth_date=birth_date, teacher_id=teacher_id, department=department, 
+                          nationality=nationality, permanent_add=permanent_add)
+        db.session.add(teacher)
+        db.session.commit()
+        flash("Teacher has been registered successfully.", "success")
+        return redirect(url_for('admin.add_teacher'))
+    return render_template('admin/add_teacher.html', title='Add Teacher Page', form=form)
 
 #Add Users
 @admin.route('/register_user', methods=["GET", "POST"])
