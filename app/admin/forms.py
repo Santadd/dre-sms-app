@@ -1,9 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SubmitField, EmailField
+from wtforms import (StringField, PasswordField, TextAreaField, 
+                     SubmitField, EmailField, HiddenField)
 from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
 from app.models import User
-from flask_login import current_user
-
 
 #Create Student Admission Form
 class StudentAdmissionForm(FlaskForm):
@@ -90,6 +89,7 @@ class TeacherAdmissionForm(FlaskForm):
     department = StringField('Department', validators=[InputRequired()])
     nationality = StringField('Nationality')
     permanent_add = TextAreaField('Permanent Address')
+    account_type = HiddenField(default="Teacher Account")
     
     submit = SubmitField('Submit')
     

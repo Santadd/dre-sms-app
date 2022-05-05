@@ -94,6 +94,7 @@ def add_teacher():
         department = form.department.data
         nationality = form.nationality.data
         permanent_add = form.permanent_add.data
+        account_type = form.account_type.data
         gender = request.form.get('gender')
         #Get teacher's image
         teacher_pic = request.files.get('teacher_pic')
@@ -105,7 +106,8 @@ def add_teacher():
         teacher = Teacher(first_name=first_name, last_name=last_name, mid_name=mid_name, join_date=join_date,
                           course=course, email=email, password=password, mobile_no=mobile_no, gender=gender,
                           birth_date=birth_date, teacher_id=teacher_id, department=department, 
-                          nationality=nationality, permanent_add=permanent_add, user_image=teacher_image)
+                          nationality=nationality, permanent_add=permanent_add, 
+                          user_image=teacher_image, account_type=account_type)
         db.session.add(teacher)
         db.session.commit()
         flash("Teacher has been registered successfully.", "success")

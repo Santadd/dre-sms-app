@@ -32,7 +32,7 @@ class Role(db.Model):
     permissions = db.Column(db.Integer)
     users = db.relationship('User', backref='role', lazy='dynamic')
     
-    #Set permissions filed to 0 if initial value isnt provided.
+    #Set permissions field to 0 if initial value isn't provided.
     def __init__(self, **kwargs):
         super(Role, self).__init__(**kwargs)
         if self.permissions is None:
@@ -88,6 +88,7 @@ class User(UserMixin, db.Model):
     mid_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80), nullable=False)
     type = db.Column(db.String(50))
+    account_type = db.Column(db.String(30), default='Student Account')
     username = db.Column(db.String(80), nullable=False, 
                          default=''.join(random.sample(string.ascii_lowercase, k=10)))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
@@ -103,13 +104,16 @@ class User(UserMixin, db.Model):
     }
     
     """Define a default role upon registration, only exception is administrator
-        whose role is assigned from the start.
+        and teacher whose roles are assigned from the start.
     """
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
             if self.email == current_app.config['SMS_ADMIN']:
                 self.role = Role.query.filter_by(name='Administrator').first()
+                self.account_type = 'Administrator Account'
+            if self.account_type == "Teacher Account":
+                self.role = Role.query.filter_by(name='Teacher').first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
     
