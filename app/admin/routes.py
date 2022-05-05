@@ -212,6 +212,19 @@ def edit_student(student_id):
     return render_template('admin/edit_student.html', title='Edit Student Page', 
                            student=student, form=form)
 
+#Delete Students
+@admin.route('/delete_student/<student_id>', methods=['POST'])
+def delete_student(student_id):
+    student = Student.query.filter_by(student_id=student_id).first_or_404()
+    #If Student is found, delete students and redirect to page
+    if request.method == "POST":
+        db.session.delete(student)
+        db.session.commit()
+        flash(f"{student.first_name} {student.last_name}'s records have been deleted successfully", "success")
+        return redirect(url_for('admin.students_list'))
+    flash("Deletion operation could not be completed", "warning")
+    return redirect(url_for('admin.students_list'))
+
 
 
 #View Teachers
@@ -270,3 +283,16 @@ def edit_teacher(teacher_id):
     form.department.data = teacher.department
     return render_template('admin/edit_teacher.html', title='Edit Teacher Page', 
                            teacher=teacher, form=form)
+
+#Delete Teachers
+@admin.route('/delete_teacher/<teacher_id>', methods=['POST'])
+def delete_teacher(teacher_id):
+    teacher = Teacher.query.filter_by(teacher_id=teacher_id).first_or_404()
+    #If teacher is found, delete teachers and redirect to page
+    if request.method == "POST":
+        db.session.delete(teacher)
+        db.session.commit()
+        flash(f"{teacher.first_name} {teacher.last_name}'s records have been deleted successfully", "success")
+        return redirect(url_for('admin.teachers_list'))
+    flash("Deletion operation could not be completed", "warning")
+    return redirect(url_for('admin.teachers_list'))
