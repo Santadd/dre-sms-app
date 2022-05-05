@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row page-titles">
             <div class="col p-md-0">
-                <h4>Add New User</h4>
+                <h4>Edit User Details</h4>
             </div>
             <div class="col p-md-0">
                 <ol class="breadcrumb">
@@ -13,7 +13,7 @@
                     </li>
                     <!-- <li class="breadcrumb-item"><a href="javascript:void()">Forms</a>
                     </li> -->
-                    <li class="breadcrumb-item active">Add New User
+                    <li class="breadcrumb-item active">Edit User Details
                     </li>
                 </ol>
             </div>
@@ -24,7 +24,7 @@
                 {% include "includes/messages.html" %}
                 <div class="card forms-card">
                     <div class="card-body">
-                        <h4 class="card-title mb-4">Register User Form</h4>
+                        <h4 class="card-title mb-4">Edit User Details</h4>
                         <div class="basic-form">
                             <form method="POST" enctype="multipart/form-data">
                                 {{ form.csrf_token }}
@@ -140,29 +140,6 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            {{ form.confirm_password.label(class="text-label") }}
-                                            {% if form.confirm_password.errors %}
-                                            <div class="input-group input-danger">
-                                                {{ form.confirm_password(class="form-control is-invalid") }}
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text bg-transparent"> 
-                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
-                                                    </span>
-                                                </div>
-                                                {% for error in form.confirm_password.errors %}
-                                                <div class="invalid-feedback">{{ error }}</div>
-                                                {% endfor %}
-                                            </div>
-                                            
-                                            {% else %}
-                                            {{ form.confirm_password(class="form-control") }}
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
                                             {{ form.username.label(class="text-label") }}
                                             {% if form.username.errors %}
                                             <div class="input-group input-danger">
@@ -187,6 +164,7 @@
                                     <label for="" class="text-label">Profile Picture</label>
                                     <div class="dropify-default">
                                         <input type="file" class="dropify" name="user_pic"
+                                        data-default-file="{{ url_for('static', filename='assets/images/users_profile/'+ user.user_image) }}"
                                         data-max-file-size="3M" 
                                         data-allowed-file-extensions="pdf png psd jpeg jpg gif" />
                                     </div>

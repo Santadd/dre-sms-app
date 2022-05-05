@@ -1,0 +1,115 @@
+{% extends 'includes/admin_dashboard_layout.html' %}
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col p-md-0">
+                <h4>All <span>Users</span></h4>
+            </div>
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">View Users</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                {% include "includes/messages.html" %}
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h4 class="card-title">All Users</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="example-style display" style="min-width: 845px">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Role Type</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        <a href="#">
+                                            <img src="{{ url_for('static', filename='assets/images/users_profile/' +user.user_image) }}" 
+                                            alt="user Image.jpg" style="border-radius:50%; width:45px; height:45px;">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ user.first_name }} {{ user.last_name }}
+                                    </td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.role.name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        <span>
+                                            <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="mr-4" data-toggle="tooltip" 
+                                                data-placement="top" title="" data-original-title="Edit">
+                                                <i class="fa fa-pencil color-primary"></i> 
+                                            </a>
+                                            <a href="javascript:void()" data-toggle="modal" 
+                                                data-placement="top" title="Delete" data-target="#basicModal-{{ user.id }}" 
+                                                data-original-title="Delete">
+                                                <i class="fa fa-close color-danger" style="color: red;"></i>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!-- Modal -->
+                                <div class="modal fade" id="basicModal-{{ user.id }}">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><strong>Username:</strong> {{ user.username }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="color: black;">
+                                                Are you sure you want to delete 
+                                                <strong>{{ user.first_name }} {{ user.last_name }}</strong> 
+                                                records from database?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                                                <form method="POST" 
+                                                    action="{{ url_for('admin.delete_user', user_id=user.id) }}">
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Role Type</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+{% endblock content %}

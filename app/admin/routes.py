@@ -3,7 +3,7 @@ from app import db
 from flask_login import current_user, login_required
 from app.admin import admin
 from app.admin.forms import (StudentAdmissionForm, UserRegistrationForm, TeacherAdmissionForm,
-                             EditTeacherForm, EditStudentForm)
+                             EditTeacherForm, EditStudentForm, EditUserForm)
 from app.admin.utils import save_student_image, save_teacher_image, save_user_image
 from app.models import Student, User, Teacher
 from app.auth.utils.email import send_email
@@ -333,3 +333,63 @@ def delete_teacher(teacher_id):
         return redirect(url_for('admin.teachers_list'))
     flash("Deletion operation could not be completed", "warning")
     return redirect(url_for('admin.teachers_list'))
+
+#View all users
+@admin.route('/view_users')
+def view_users():
+    users = User.query.all()
+    return render_template('admin/view_users.html', title='All Users Page', users=users)
+
+#Edit users details
+@admin.route('/edit_user/<user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    form = EditUserForm()
+    
+    user = User.query.get_or_404(user_id)
+    #Update user Details if form is submitted
+    if form.validate_on_submit():
+        #Update password if new password is sumbitted
+        if form.password.data:
+            user.password = form.password.data
+        user.first_name = form.first_name.data
+        user.last_name = form.last_name.data
+        user.mid_name = form.mid_name.data
+        user.email = form.email.data
+        user.username = form.username.data
+        #If new image is submitted, replace old image with the new one
+        if request.files.get('user_pic'):
+            try:
+                os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +user.user_image))
+                user.user_image = save_user_image(request.files.get('user_pic'))
+            except:
+                user.user_image = save_user_image(request.files.get('user_pic'))
+        #commit update to database
+        db.session.commit()
+        flash(f"{user.first_name}'s details have been updated successfully", "success")
+        return redirect(url_for('admin.edit_user', user_id=user.id))
+    #Populate fields with user's details
+    form.first_name.data = user.first_name
+    form.last_name.data = user.last_name
+    form.mid_name.data = user.mid_name
+    form.email.data = user.email
+    form.username.data = user.username
+    return render_template('admin/edit_user.html', title='Edit User Page', 
+                           user=user, form=form)
+    
+#Delete users
+@admin.route('/delete_user/<user_id>', methods=['POST'])
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    #If user is found, delete users and redirect to page
+    if request.method == "POST":
+        #Prevent administrator from being deleted
+        if user.role.name == "Administrator":
+            flash('Deletion operation cannot be applied on Administator', "warning")
+            return redirect(url_for('admin.view_users'))
+        db.session.delete(user)
+        db.session.commit()
+        flash(f"{user.first_name} {user.last_name}'s records have been deleted successfully", "success")
+        return redirect(url_for('admin.view_users'))
+    flash("Deletion operation could not be completed", "warning")
+    return redirect(url_for('admin.view_users'))
+

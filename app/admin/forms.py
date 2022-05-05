@@ -141,3 +141,21 @@ class UserRegistrationForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
+        
+#Edit User    
+class EditUserForm(FlaskForm):
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    mid_name = StringField('Middle Name')
+    username = StringField('Username')
+    email = StringField('Email', validators=[Email(), InputRequired()])
+    password = PasswordField('Password')
+    submit = SubmitField('Update')
+    
+    """def validate_email(self, field):
+        if User.query.filter_by(email=field.data.lower()).first():
+            raise ValidationError('Email already registered.')
+"""
+    """def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError('Username already in use.')"""
