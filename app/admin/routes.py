@@ -1,12 +1,14 @@
-from flask import redirect, render_template, url_for, request, flash
+from flask import current_app, redirect, render_template, url_for, request, flash
 from app import db
 from flask_login import current_user, login_required
 from app.admin import admin
 from app.admin.forms import (StudentAdmissionForm, UserRegistrationForm, TeacherAdmissionForm,
                              EditTeacherForm, EditStudentForm)
+from app.admin.utils import save_student_image, save_teacher_image, save_user_image
 from app.models import Student, User, Teacher
 from app.auth.utils.email import send_email
 from app.auth.utils.decorators import permission_required, admin_required
+import os
 
 @admin.route('/dashboard')
 @login_required
@@ -48,6 +50,13 @@ def add_student():
         present_add = form.present_add.data
         permanent_add = form.permanent_add.data
         gender = request.form.get('gender')
+        #Get student image
+        student_pic = request.files.get('student_pic')
+        if student_pic:
+            student_image = save_student_image(student_pic)
+        else:
+            student_image = 'default.jpg'
+        
         #Create a student instance and add details to database
         student = Student(first_name=first_name, last_name=last_name, mid_name=mid_name, reg_date=reg_date,
                           course=course, email=email, password=password, mobile_no=mobile_no, gender=gender,
@@ -57,7 +66,7 @@ def add_student():
                           father_occ=father_occ, mother_occ=mother_occ, father_email=father_email,
                           mother_email=mother_email, father_mobile_no=father_mobile_no,
                           mother_mobile_no=mother_mobile_no, present_add=present_add, 
-                          permanent_add=permanent_add)
+                          permanent_add=permanent_add, user_image=student_image)
         db.session.add(student)
         db.session.commit()
         flash("Student details has been successfully added.", "success")
@@ -86,11 +95,17 @@ def add_teacher():
         nationality = form.nationality.data
         permanent_add = form.permanent_add.data
         gender = request.form.get('gender')
+        #Get teacher's image
+        teacher_pic = request.files.get('teacher_pic')
+        if teacher_pic:
+            teacher_image = save_teacher_image(teacher_pic)
+        else:
+            teacher_image = 'default.jpg'
         #Create a teacher instance and add details to database
         teacher = Teacher(first_name=first_name, last_name=last_name, mid_name=mid_name, join_date=join_date,
                           course=course, email=email, password=password, mobile_no=mobile_no, gender=gender,
                           birth_date=birth_date, teacher_id=teacher_id, department=department, 
-                          nationality=nationality, permanent_add=permanent_add)
+                          nationality=nationality, permanent_add=permanent_add, user_image=teacher_image)
         db.session.add(teacher)
         db.session.commit()
         flash("Teacher has been registered successfully.", "success")
@@ -103,9 +118,15 @@ def register_user():
     form = UserRegistrationForm()
     if form.validate_on_submit():
         #Add new user to database
+        #Get user's image
+        user_pic = request.files.get('user_pic')
+        if user_pic:
+            user_image = save_user_image(user_pic)
+        else:
+            user_image = 'default.jpg'
         user = User(first_name=form.first_name.data, last_name=form.last_name.data, 
                     mid_name=form.mid_name.data, username=form.username.data, email=form.email.data,
-                    password=form.password.data)
+                    password=form.password.data, user_image=user_image)
         db.session.add(user)
         db.session.commit()
         #Generate user token
@@ -180,6 +201,15 @@ def edit_student(student_id):
         student.mother_mobile_no = form.mother_mobile_no.data
         student.present_add = form.present_add.data
         student.gender = request.form.get('gender')
+        
+        #If new image is submitted, replace old image with the new one
+        if request.files.get('student_pic'):
+            try:
+                os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +student.user_image))
+                student.user_image = save_student_image(request.files.get('student_pic'))
+            except:
+                student.user_image = save_student_image(request.files.get('student_pic'))
+                
         #commit update to database
         db.session.commit()
         flash(f"{student.first_name}'s details have been updated successfully", "success")
@@ -264,6 +294,13 @@ def edit_teacher(teacher_id):
         teacher.permanent_add = form.permanent_add.data
         teacher.department = form.department.data
         teacher.gender = request.form.get('gender')
+        #If new image is submitted, replace old image with the new one
+        if request.files.get('teacher_pic'):
+            try:
+                os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +teacher.user_image))
+                teacher.user_image = save_teacher_image(request.files.get('teacher_pic'))
+            except:
+                teacher.user_image = save_teacher_image(request.files.get('teacher_pic'))
         #commit update to database
         db.session.commit()
         flash(f"{teacher.first_name}'s details have been updated successfully", "success")

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SubmitField
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField, EmailField
 from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
 from app.models import User
 from flask_login import current_user
@@ -26,8 +26,8 @@ class StudentAdmissionForm(FlaskForm):
     mother_name = StringField('Mother\'s Name')
     father_occ = StringField('Father\'s Occupation')
     mother_occ = StringField('Mother\'s Occupation')
-    father_email = StringField('Father\'s Email', validators=[Email()])
-    mother_email = StringField('Mother\'s Email', validators=[Email()])
+    father_email = EmailField('Father\'s Email')
+    mother_email = EmailField('Mother\'s Email')
     father_mobile_no = StringField('Father\'s Mobile Number')
     mother_mobile_no = StringField('Mother\'s Mobile Number')
     present_add = TextAreaField('Present Address')
@@ -60,8 +60,8 @@ class EditStudentForm(FlaskForm):
     mother_name = StringField('Mother\'s Name')
     father_occ = StringField('Father\'s Occupation')
     mother_occ = StringField('Mother\'s Occupation')
-    father_email = StringField('Father\'s Email', validators=[Email()])
-    mother_email = StringField('Mother\'s Email', validators=[Email()])
+    father_email = EmailField('Father\'s Email')
+    mother_email = EmailField('Mother\'s Email')
     father_mobile_no = StringField('Father\'s Mobile Number')
     mother_mobile_no = StringField('Mother\'s Mobile Number')
     present_add = TextAreaField('Present Address')

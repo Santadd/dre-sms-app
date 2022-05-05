@@ -13,6 +13,7 @@
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/images/favicon.png') }}">
     <link href="{{ url_for('static', filename='assets/plugins/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/dropify/dist/css/dropify.min.css') }}">
     <!-- Custom Stylesheet -->
     <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
 
@@ -86,7 +87,7 @@
                     <ul>                                                
                         <li class="icons">
                             <a href="javascript:void(0)" class="log-user">
-                                <img src="{{ url_for('static', filename='assets/images/avatar/1.jpg') }}" alt=""> <span>George Martin</span> <i
+                                <img src="{{ url_for('static', filename='assets/images/users_profile/'+ current_user.user_image) }}" alt=""> <span>George Martin</span> <i
                                     class="fa fa-caret-down f-s-14" aria-hidden="true"></i>
                             </a>
                             <div class="drop-down dropdown-profile animated bounceInDown">
@@ -902,6 +903,10 @@
 
     <script src="{{ url_for('static', filename='assets/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/plugins-init/datatables.init.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='assets/plugins/dropify/dist/js/dropify.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/plugins-init/dropify-init.js') }}"></script>
 </body>
+
 
 </html>

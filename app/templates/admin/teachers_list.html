@@ -42,8 +42,8 @@
                                 <tr>
                                     <td>
                                         <a href="#">
-                                            <img src="{{ url_for('static', filename='assets/images/avatar/1.jpg') }}" 
-                                            alt="teacher Image.jpg" style="border-radius:50%">
+                                            <img src="{{ url_for('static', filename='assets/images/users_profile/' +teacher.user_image) }}" 
+                                            alt="teacher Image.jpg" style="border-radius:50%; width:45px; height:45px;">
                                         </a>
                                     </td>
                                     <td>{{ teacher.teacher_id }}</td>

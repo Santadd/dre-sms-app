@@ -94,6 +94,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(80), nullable=False)
     password_hash = db.Column(db.String(120))
     confirmed = db.Column(db.Boolean, default=False)
+    user_image = db.Column(db.String(80), default='default.jpg')
     
     __mapper_args__ = {
         'polymorphic_identity': 'users',

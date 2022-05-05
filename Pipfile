@@ -13,6 +13,7 @@ flask-migrate = "*"
 pymysql = "*"
 email-validator = "*"
 itsdangerous = "==2.0.1"
+flask-uploads = "*"
 
 [dev-packages]
 
