@@ -14,6 +14,7 @@ def login():
     if form.validate_on_submit():
         #Query for user object
         user = User.query.filter_by(email=form.email.data).first()
+        print(user.role.name)
         #If user is found and password is correct, log user in
         if user is not None and user.verify_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
@@ -21,9 +22,15 @@ def login():
             next = request.args.get('next')
             #If next is not available, return to landing page
             if next is None or not next.startswith('/'):
-                next = url_for('admin.admin_dashboard')
+                #Log user into the neccessary dashboard based on role name
+                if user.role.name == "Administrator":
+                    next = url_for('admin.admin_dashboard')
+                elif user.role.name == "Student":
+                    next = url_for('student.student_dashboard')
+                elif user.role.name == "Teacher":
+                    next = url_for('teacher.teacher_dashboard')
             return redirect(next)
-        #If user details is not found, flash an error message
+        #If user details is not found, flash an error message 
         flash("Invalid email or password", "danger")   
     return render_template('auth/login.html', title='Login Page', form=form)
 

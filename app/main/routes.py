@@ -5,4 +5,4 @@ from app.main import main
 @main.route('/')
 @main.route('/home')
 def homepage():
-    return redirect(url_for('admin.admin_dashboard')) 
+    return redirect(url_for('auth.login')) 

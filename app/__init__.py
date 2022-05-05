@@ -31,6 +31,8 @@ def create_app(config_name):
     from app.main import main as main_blueprint
     from app.auth import auth as auth_blueprint
     from app.errors import errors as error_blueprint
+    from app.student import student as student_blueprint
+    from app.teacher import teacher as teacher_blueprint
     
     
     #Register Blueprints
@@ -38,6 +40,8 @@ def create_app(config_name):
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(error_blueprint)
+    app.register_blueprint(student_blueprint, url_prefix='/student')
+    app.register_blueprint(teacher_blueprint, url_prefix='/teacher')
     
     #Return application factory
     return app
