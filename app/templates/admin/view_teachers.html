@@ -1,0 +1,87 @@
+{% extends 'includes/admin_dashboard_layout.html' %}
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col p-md-0">
+                <h4>All <span>Teachers</span></h4>
+            </div>
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">View Teachers</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h4 class="card-title">Teacher List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="example-style display" style="min-width: 845px">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Teacher ID</th>
+                                    <th>Name</th>                                    
+                                    <th>Department</th>
+                                    <th>Course</th>
+                                    <th>Gender</th>
+                                    <th>Nationality</th>
+                                    <th>DOB</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for teacher in teachers %}
+                                <tr>
+                                    <td>
+                                        <a href="#">
+                                            <img src="{{ url_for('static', filename='assets/images/avatar/1.jpg') }}" 
+                                            alt="teacher Image.jpg" style="border-radius:50%">
+                                        </a>
+                                    </td>
+                                    <td>{{ teacher.teacher_id }}</td>
+                                    <td>
+                                        {{ teacher.first_name }} {{ teacher.last_name }}
+                                    </td>                                    
+                                    <td>{{ teacher.department }}</td>
+                                    <td>{{ teacher.course }}</td>
+                                    <td>{{ teacher.gender }}</td>
+                                    <td>{{ teacher.nationality }}</td>
+                                    <td>{{ teacher.birth_date }}</td>
+                                    <td>{{ teacher.email}}</td>
+                                    <td>{{ teacher.mobile_no }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Teacher ID</th>
+                                    <th>Name</th>                                    
+                                    <th>Department</th>
+                                    <th>Course</th>
+                                    <th>Gender</th>
+                                    <th>Nationality</th>
+                                    <th>DOB</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+{% endblock content %}

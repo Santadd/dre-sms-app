@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
 from app.models import User
+from flask_login import current_user
 
 
 #Create Student Admission Form
@@ -38,6 +39,42 @@ class StudentAdmissionForm(FlaskForm):
         if User.query.filter_by(email=field.data.lower()).first():
             raise ValidationError('Email already registered.')
         
+#Edit Student Details Form
+class EditStudentForm(FlaskForm):
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    mid_name = StringField('Middle Name')
+    email = StringField('Email', validators=[Email()])
+    password = PasswordField('Password')
+    reg_date = StringField('Registration Date')
+    course = StringField('Course')
+    mobile_no = StringField('Mobile Number')
+    admission_no = StringField('Admission Number')
+    birth_date = StringField('Birth Date')
+    student_id = StringField('Student ID')
+    student_class = StringField('Class')
+    department = StringField('Department')
+    religion = StringField('Religion')
+    nationality = StringField('Nationality')
+    father_name = StringField('Father\'s Name')
+    mother_name = StringField('Mother\'s Name')
+    father_occ = StringField('Father\'s Occupation')
+    mother_occ = StringField('Mother\'s Occupation')
+    father_email = StringField('Father\'s Email', validators=[Email()])
+    mother_email = StringField('Mother\'s Email', validators=[Email()])
+    father_mobile_no = StringField('Father\'s Mobile Number')
+    mother_mobile_no = StringField('Mother\'s Mobile Number')
+    present_add = TextAreaField('Present Address')
+    permanent_add = TextAreaField('Permanent Address')
+    
+    submit = SubmitField('Submit')
+    
+    #Check for existing emails
+    #def validate_email(self, email):
+     #   if email.data != self.email and \
+     #       User.query.filter_by(email=email.data).first():
+      #      raise ValidationError('Email already in use. Use a different one.')
+        
 #Create Teacher Admission Form
 class TeacherAdmissionForm(FlaskForm):
     first_name = StringField('First Name', validators=[InputRequired()])
@@ -59,6 +96,29 @@ class TeacherAdmissionForm(FlaskForm):
     def validate_email(self, field):
         if User.query.filter_by(email=field.data.lower()).first():
             raise ValidationError('Email already registered.')
+        
+        
+#Edit Teacher Details Form
+class EditTeacherForm(FlaskForm):
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    mid_name = StringField('Middle Name')
+    email = StringField('Email', validators=[Email()])
+    password = PasswordField('Password')
+    join_date = StringField('Joining Date')
+    course = StringField('Course')
+    mobile_no = StringField('Mobile Number')
+    birth_date = StringField('Birth Date')
+    teacher_id = StringField('Teacher ID')
+    department = StringField('Department')
+    nationality = StringField('Nationality')
+    permanent_add = TextAreaField('Permanent Address')
+    
+    submit = SubmitField('Submit')
+    
+    #def validate_email(self, field):
+    #    if User.query.filter_by(email=field.data.lower()).first():
+    #        raise ValidationError('Email already registered.')
 
 #Register User    
 class UserRegistrationForm(FlaskForm):

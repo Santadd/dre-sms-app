@@ -1,0 +1,577 @@
+{% extends 'includes/admin_dashboard_layout.html' %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col p-md-0">
+                <h4>Edit Student Details</h4>
+            </div>
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a>
+                    </li>
+                    <!-- <li class="breadcrumb-item"><a href="javascript:void()">Forms</a>
+                    </li> -->
+                    <li class="breadcrumb-item active">Edit Student Details
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                {% include "includes/messages.html" %}
+                <div class="card forms-card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Edit Student Details</h4>
+                        <div class="basic-form">
+                            <form method="POST" enctype="multipart/form-data">
+                                {{ form.csrf_token }}
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.first_name.label(class="text-label") }}
+                                            {% if form.first_name.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.first_name(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.first_name.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.first_name(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.last_name.label(class="text-label") }}
+                                            {% if form.last_name.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.last_name(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.last_name.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.last_name(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.mid_name.label(class="text-label") }}
+                                            {% if form.mid_name.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.mid_name(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.mid_name.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.mid_name(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.email.label(class="text-label") }}
+                                            {% if form.email.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.email(class="form-control is-invalid", placeholder="abc@example.com") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.email.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.email(class="form-control", placeholder="abc@example.com") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.password.label(class="text-label") }}
+                                            {% if form.password.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.password(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.password.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.password(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.reg_date.label(class="text-label") }}
+                                            {% if form.reg_date.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.reg_date(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.reg_date.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.reg_date(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.course.label(class="text-label") }}
+                                            {% if form.course.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.course(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.course.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.course(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.mobile_no.label(class="text-label") }}
+                                            {% if form.mobile_no.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.mobile_no(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.mobile_no.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.mobile_no(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label class="text-label">Gender</label>
+                                            <select name="gender" class="form-control" id="gender" required>
+                                                <option value="{{ student.gender }}" style="display: none;">
+                                                    {{ student.gender }}
+                                                </option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.admission_no.label(class="text-label") }}
+                                            {% if form.admission_no.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.admission_no(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.admission_no.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.admission_no(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.birth_date.label(class="text-label") }}
+                                            {% if form.birth_date.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.birth_date(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.birth_date.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.birth_date(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.student_id.label(class="text-label") }}
+                                            {% if form.student_id.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.student_id(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.student_id.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.student_id(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.student_class.label(class="text-label") }}
+                                            {% if form.student_class.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.student_class(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.student_class.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.student_class(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.department.label(class="text-label") }}
+                                            {% if form.department.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.department(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.department.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.department(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.religion.label(class="text-label") }}
+                                            {% if form.religion.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.religion(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.religion.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.religion(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.nationality.label(class="text-label") }}
+                                            {% if form.nationality.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.nationality(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.nationality.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.nationality(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="card-title mb-3">Parents Information Section</h4>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.father_name.label(class="text-label") }}
+                                            {% if form.father_name.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.father_name(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.father_name.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.father_name(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.mother_name.label(class="text-label") }}
+                                            {% if form.mother_name.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.mother_name(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.mother_name.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.mother_name(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.father_occ.label(class="text-label") }}
+                                            {% if form.father_occ.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.father_occ(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.father_occ.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.father_occ(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.mother_occ.label(class="text-label") }}
+                                            {% if form.mother_occ.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.mother_occ(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.mother_occ.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.mother_occ(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.father_email.label(class="text-label") }}
+                                            {% if form.father_email.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.father_email(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.father_email.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.father_email(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.mother_email.label(class="text-label") }}
+                                            {% if form.mother_email.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.mother_email(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.mother_email.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.mother_email(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.father_mobile_no.label(class="text-label") }}
+                                            {% if form.father_mobile_no.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.father_mobile_no(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.father_mobile_no.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.father_mobile_no(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.mother_mobile_no.label(class="text-label") }}
+                                            {% if form.mother_mobile_no.errors %}
+                                            <div class="input-group input-danger">
+                                                {{ form.mother_mobile_no(class="form-control is-invalid") }}
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-transparent"> 
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
+                                                    </span>
+                                                </div>
+                                                {% for error in form.mother_mobile_no.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {% else %}
+                                            {{ form.mother_mobile_no(class="form-control") }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="card-title mb-3">Address Section</h4>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.present_add.label(class="text-label") }}
+                                            {{ form.present_add(class="form-control", rows=4) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            {{ form.permanent_add.label(class="text-label") }}
+                                            {{ form.permanent_add(class="form-control", rows=4) }}
+                                        </div>
+                                    </div>
+                                </div>                                
+                                {{ form.submit(class="btn btn-primary btn-form mr-2") }}                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- #/ container -->
+</div>
+{% endblock content %}
