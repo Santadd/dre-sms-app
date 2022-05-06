@@ -9,7 +9,12 @@ from app.auth.forms import LoginForm, PasswordResetForm, PasswordResetRequestFor
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('admin.admin_dashboard'))
+        if current_user.role.name == "Administrator":
+            return redirect(url_for('admin.admin_dashboard'))
+        elif current_user.role.name == 'Teacher':
+            return redirect(url_for('teacher.teacher_dashboard'))
+        elif current_user.role.name == 'Student':
+            return redirect(url_for('student.student_dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
         #Query for user object
@@ -34,8 +39,8 @@ def login():
     return render_template('auth/login.html', title='Login Page', form=form)
 
 
-@login_required
 @auth.route('/logout')
+@login_required
 def logout():
     logout_user()
     flash("You have been logged out", "info")

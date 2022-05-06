@@ -11,6 +11,8 @@ from app.auth.utils.decorators import permission_required, admin_required
 import os
 
 @admin.route('/dashboard')
+@login_required
+@admin_required
 def admin_dashboard():
     return render_template('admin/index.html', title='Main Dashboard') 
 
@@ -18,6 +20,7 @@ def admin_dashboard():
 #Register Students
 @admin.route('/add_student', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_student():
     form = StudentAdmissionForm()
     if form.validate_on_submit():
@@ -75,6 +78,7 @@ def add_student():
 #Register Teachers
 @admin.route('/add_teacher', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_teacher():
     form = TeacherAdmissionForm()
     if form.validate_on_submit():
@@ -114,6 +118,8 @@ def add_teacher():
 
 #Add Users
 @admin.route('/register_user', methods=["GET", "POST"])
+@login_required
+@admin_required
 def register_user():
     form = UserRegistrationForm()
     if form.validate_on_submit():
@@ -155,18 +161,24 @@ def confirm(token):
 
 #View Students
 @admin.route('/view_students')
+@login_required
+@admin_required
 def view_students():
     students = Student.query.all()
     return render_template('admin/view_students.html', title='All Students Page', students=students)
 
 #View Students List for editing
 @admin.route('/students_list')
+@login_required
+@admin_required
 def students_list():
     students = Student.query.all()
     return render_template('admin/students_list.html', title='All Students Page', students=students)
 
 #Edit Student Details
 @admin.route('/edit_student/<student_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
 def edit_student(student_id):
     form = EditStudentForm()
     
@@ -244,6 +256,8 @@ def edit_student(student_id):
 
 #Delete Students
 @admin.route('/delete_student/<student_id>', methods=['POST'])
+@login_required
+@admin_required
 def delete_student(student_id):
     student = Student.query.filter_by(student_id=student_id).first_or_404()
     #If Student is found, delete students and redirect to page
@@ -259,12 +273,16 @@ def delete_student(student_id):
 
 #View Teachers
 @admin.route('/view_teachers')
+@login_required
+@admin_required
 def view_teachers():
     teachers = Teacher.query.all()
     return render_template('admin/view_teachers.html', title='All Teachers Page', teachers=teachers)
 
 #View Teachers list for editing
 @admin.route('/teachers_list')
+@login_required
+@admin_required
 def teachers_list():
     teachers = Teacher.query.all()
     return render_template('admin/teachers_list.html', title='All Teachers Page', teachers=teachers)
@@ -272,6 +290,8 @@ def teachers_list():
 
 #Edit Teachers Details
 @admin.route('/edit_teacher/<teacher_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
 def edit_teacher(teacher_id):
     form = EditTeacherForm()
     
@@ -323,6 +343,8 @@ def edit_teacher(teacher_id):
 
 #Delete Teachers
 @admin.route('/delete_teacher/<teacher_id>', methods=['POST'])
+@login_required
+@admin_required
 def delete_teacher(teacher_id):
     teacher = Teacher.query.filter_by(teacher_id=teacher_id).first_or_404()
     #If teacher is found, delete teachers and redirect to page
@@ -336,12 +358,16 @@ def delete_teacher(teacher_id):
 
 #View all users
 @admin.route('/view_users')
+@login_required
+@admin_required
 def view_users():
     users = User.query.all()
     return render_template('admin/view_users.html', title='All Users Page', users=users)
 
 #Edit users details
 @admin.route('/edit_user/<user_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
 def edit_user(user_id):
     form = EditUserForm()
     
@@ -378,6 +404,8 @@ def edit_user(user_id):
     
 #Delete users
 @admin.route('/delete_user/<user_id>', methods=['POST'])
+@login_required
+@admin_required
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     #If user is found, delete users and redirect to page

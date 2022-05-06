@@ -6,5 +6,6 @@ from app import db
 
 #Student Homepage
 @student.route('/student_dashboard')
+@login_required
 def student_dashboard():
     return render_template('student/student_dashboard.html', title='My Dashboard')

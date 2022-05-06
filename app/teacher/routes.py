@@ -5,5 +5,6 @@ from app.teacher import teacher
 
 #Teacher's Homepage
 @teacher.route('/teacher_dashboard')
+@login_required
 def teacher_dashboard():
     return render_template('teacher/teacher_dashboard.html', title='My Dashboard')
