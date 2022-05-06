@@ -17,6 +17,8 @@
     <link rel="manifest" href="{{ url_for('static', filename='assets/images/favicon/site.webmanifest') }}">
     
     <link href="{{ url_for('static', filename='assets/plugins/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    <!-- Date picker plugins css -->
+    <link href="{{ url_for('static', filename='assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/dropify/dist/css/dropify.min.css') }}">
     <!-- Custom Stylesheet -->
     <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
@@ -862,6 +864,10 @@
 
     <script src="{{ url_for('static', filename='assets/plugins/dropify/dist/js/dropify.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/plugins-init/dropify-init.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='assets/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/plugins-init/bs-date-picker-init.js') }}"></script>
 </body>
 
 

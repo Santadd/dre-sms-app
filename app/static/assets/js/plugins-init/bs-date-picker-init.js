@@ -2,7 +2,8 @@
     "use strict"
 
     jQuery('.mydatepicker, #datepicker').datepicker();
-        jQuery('#datepicker-autoclose').datepicker({
+        jQuery('.datepicker-autoclose').datepicker({
+            format: 'yyyy-mm-dd',
             autoclose: true,
             todayHighlight: true
         });

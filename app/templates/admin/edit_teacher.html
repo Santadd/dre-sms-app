@@ -143,7 +143,7 @@
                                             {{ form.join_date.label(class="text-label") }}
                                             {% if form.join_date.errors %}
                                             <div class="input-group input-danger">
-                                                {{ form.join_date(class="form-control is-invalid") }}
+                                                {{ form.join_date(class="form-control is-invalid datepicker-autoclose", placeholder="yyyy-mm-dd") }}
                                                 <div class="input-group-append">
                                                     <span class="input-group-text bg-transparent"> 
                                                         <i class="fa fa-times text-danger" aria-hidden="true"></i> 
@@ -155,7 +155,7 @@
                                             </div>
                                             
                                             {% else %}
-                                            {{ form.join_date(class="form-control") }}
+                                            {{ form.join_date(class="form-control datepicker-autoclose", placeholder="yyyy-mm-dd") }}
                                             {% endif %}
                                         </div>
                                     </div>
@@ -245,7 +245,7 @@
                                             {{ form.birth_date.label(class="text-label") }}
                                             {% if form.birth_date.errors %}
                                             <div class="input-group input-danger">
-                                                {{ form.birth_date(class="form-control is-invalid") }}
+                                                {{ form.birth_date(class="form-control is-invalid datepicker-autoclose", placeholder="yyyy-mm-dd") }}
                                                 <div class="input-group-append">
                                                     <span class="input-group-text bg-transparent"> 
                                                         <i class="fa fa-times text-danger" aria-hidden="true"></i> 
@@ -257,7 +257,7 @@
                                             </div>
                                             
                                             {% else %}
-                                            {{ form.birth_date(class="form-control") }}
+                                            {{ form.birth_date(class="form-control datepicker-autoclose", placeholder="yyyy-mm-dd") }}
                                             {% endif %}
                                         </div>
                                     </div>
