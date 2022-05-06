@@ -3,9 +3,10 @@ from app import db
 from flask_login import current_user, login_required
 from app.admin import admin
 from app.admin.forms import (StudentAdmissionForm, UserRegistrationForm, TeacherAdmissionForm,
-                             EditTeacherForm, EditStudentForm, EditUserForm)
+                             EditTeacherForm, EditStudentForm, EditUserForm, AddCourseForm, 
+                             AddDepartmentForm, EditCourseForm, EditDepartmentForm)
 from app.admin.utils import save_student_image, save_teacher_image, save_user_image
-from app.models import Student, User, Teacher
+from app.models import Student, User, Teacher, Course, Department
 from app.auth.utils.email import send_email
 from app.auth.utils.decorators import permission_required, admin_required
 import os
@@ -421,3 +422,114 @@ def delete_user(user_id):
     flash("Deletion operation could not be completed", "warning")
     return redirect(url_for('admin.view_users'))
 
+#Add a course
+@admin.route('/add_course', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def add_course():
+    form = AddCourseForm()
+    if form.validate_on_submit():
+        #Create a course instance and add to the database
+        course = Course(name=form.coursename.data)
+        db.session.add(course)
+        db.session.commit()
+        flash('Course has been added successfully', 'success')
+        return redirect(url_for('admin.add_course'))
+    return render_template('admin/add_course.html', title='Add Course', form=form)
+
+
+#Add a department
+@admin.route('/add_department', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def add_department():
+    form = AddDepartmentForm()
+    if form.validate_on_submit():
+        #Create a department instance and add to the database
+        department = Department(name=form.departmentname.data)
+        db.session.add(department)
+        db.session.commit()
+        flash('Department has been added successfully', 'success')
+        return redirect(url_for('admin.add_department'))
+    return render_template('admin/add_department.html', title='Add Department', form=form)
+
+#View Courses
+@admin.route('/view_courses')
+@login_required
+@admin_required
+def view_courses():
+    courses = Course.query.all()
+    return render_template('admin/view_courses.html', title='All Courses Page', courses=courses)
+
+
+#Edit Courses
+@admin.route('/edit_course/<int:course_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_course(course_id):
+    form = EditCourseForm()
+    course = Course.query.filter_by(id=course_id).first_or_404()
+    #Update course details
+    if form.validate_on_submit():
+        course.name = form.coursename.data
+        #Commit new changes
+        db.session.commit()
+        flash('Course has been updated successfully', 'success')
+        return redirect(url_for('admin.edit_course', course_id=course.id))
+    form.coursename.data = course.name
+    return render_template('admin/edit_course.html', title='Edit Course Page', course=course, form=form)
+
+#Delete Courses
+@admin.route('/delete_course/<int:course_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_course(course_id):
+    course = Course.query.filter_by(id=course_id).first_or_404()
+    #Delete course details
+    if request.method == "POST":
+        db.session.delete(course)
+        #Commit new changes
+        db.session.commit()
+        flash('Course has been deleted successfully', 'success')
+        return redirect(url_for('admin.view_courses'))
+
+           
+#View Department
+@admin.route('/view_departments')
+@login_required
+@admin_required
+def view_departments():
+    departments = Department.query.all()
+    return render_template('admin/view_departments.html', title='All Departments Page', departments=departments)
+
+
+#Edit departments
+@admin.route('/edit_department/<int:department_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_department(department_id):
+    form = EditDepartmentForm()
+    department = Department.query.filter_by(id=department_id).first_or_404()
+    #Update department details
+    if form.validate_on_submit():
+        department.name = form.departmentname.data
+        #Commit new changes
+        db.session.commit()
+        flash('Department has been updated successfully', 'success')
+        return redirect(url_for('admin.edit_department', department_id=department.id))
+    form.departmentname.data = department.name
+    return render_template('admin/edit_department.html', title='Edit Department Page', department=department, form=form)
+
+#Delete department
+@admin.route('/delete_department/<int:department_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_department(department_id):
+    department = Department.query.filter_by(id=department_id).first_or_404()
+    #Delete department
+    if request.method == "POST":
+        db.session.delete(department)
+        #Commit new changes
+        db.session.commit()
+        flash('Department has been deleted successfully', 'success')
+        return redirect(url_for('admin.view_departments')) 

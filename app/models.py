@@ -216,6 +216,13 @@ class Student(User):
     mother_mobile_no = db.Column(db.String(80))
     present_add = db.Column(db.Text)
     permanent_add = db.Column(db.Text)
+    
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    course = db.relationship('Course', backref=db.backref('student_course', lazy=True))
+    
+    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
+    department = db.relationship('Department', backref=db.backref('student_department', lazy=True))
+    
 
     __mapper_args__ = {
         'polymorphic_identity': 'student',
@@ -249,3 +256,22 @@ class Teacher(User):
     
     def __repr__(self):
         return "<Teacher %r>" %self.teacher_id
+    
+#Department Model
+class Department(db.Model):
+    __tablename__ = "departments"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False, unique=True)
+    
+    def __repr__(self):
+        return "<Department %r>" %self.name
+    
+#Course Model
+class Course(db.Model):
+    __tablename__ = "courses"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False, unique=True)
+    
+    def __repr__(self):
+        return "<Course %r>" %self.name
+    

@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, TextAreaField, 
                      SubmitField, EmailField, HiddenField)
 from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
-from app.models import User
+from app.models import User, Course, Department
 
 #Create Student Admission Form
 class StudentAdmissionForm(FlaskForm):
@@ -160,3 +160,40 @@ class EditUserForm(FlaskForm):
     """def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')"""
+            
+#Add Course form
+class AddCourseForm(FlaskForm):
+    coursename = StringField('Course Name', validators=[InputRequired(message="Please enter a course")])
+    submit = SubmitField('Add Course')
+    
+    def validate_coursename(self, field):
+        if Course.query.filter_by(name=field.data).first():
+            raise ValidationError('Course name already exits.')
+        
+#Edit Course form
+class EditCourseForm(FlaskForm):
+    coursename = StringField('Course Name')
+    submit = SubmitField('Edit Course')
+    
+    """def validate_coursename(self, field):
+        if Course.query.filter_by(name=field.data).first():
+            raise ValidationError('Course name already exits.')"""
+    
+#Add Deparment form
+class AddDepartmentForm(FlaskForm):
+    departmentname = StringField('Department Name', validators=[InputRequired(message="Please enter a Department")])
+    submit = SubmitField('Add Department')
+    
+    
+    def validate_departmentname(self, field):
+        if Department.query.filter_by(name=field.data).first():
+            raise ValidationError('Department name already exits.')
+        
+#Edit department form
+class EditDepartmentForm(FlaskForm):
+    departmentname = StringField('Department Name')
+    submit = SubmitField('Edit Department')
+    
+    """def validate_departmentname(self, field):
+        if department.query.filter_by(name=field.data).first():
+            raise ValidationError('Department name already exits.')"""

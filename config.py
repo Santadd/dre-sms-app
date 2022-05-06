@@ -26,7 +26,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
-                            'sqlite:///' + os.path.join(basedir, 'dre-sms.db')
+                            'mysql+pymysql://root:newpasssql@localhost/dre-sms'
     
 class TestingConfig(Config):
     TESTING = True

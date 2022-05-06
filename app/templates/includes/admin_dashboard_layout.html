@@ -180,28 +180,24 @@
                     <li class="mega-menu mega-menu-sm">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="mdi mdi-office-building"></i><span class="nav-text">Departments</span><span
-                                class="badge bg-lgreen text-white nav-badge">3</span>
+                                class="badge bg-lgreen text-white nav-badge">2</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="#">Add Department</a>
+                            <li><a href="{{ url_for('admin.add_department') }}">Add Department</a>
                             </li>
-                            <li><a href="#">Edit Department</a>
-                            </li>
-                            <li><a href="#">View Departments</a>
+                            <li><a href="{{ url_for('admin.view_departments') }}">View Departments</a>
                             </li>
                         </ul>
                     </li>
                     <li class="mega-menu mega-menu-sm">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="mdi mdi-book-open-variant"></i><span class="nav-text">Courses</span><span
-                                class="badge bg-dpink text-white nav-badge">3</span>
+                                class="badge bg-dpink text-white nav-badge">2</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="#">Add Course</a>
+                            <li><a href="{{ url_for('admin.add_course') }}">Add Course</a>
                             </li>
-                            <li><a href="#">Edit Course</a>
-                            </li>
-                            <li><a href="#">View Courses</a>
+                            <li><a href="{{ url_for('admin.view_courses') }}">View Courses</a>
                             </li>
                         </ul>
                     </li>
