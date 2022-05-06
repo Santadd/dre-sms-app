@@ -218,10 +218,10 @@ class Student(User):
     permanent_add = db.Column(db.Text)
     
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
-    course = db.relationship('Course', backref=db.backref('student_course', lazy=True))
+    student_course = db.relationship('Course', backref=db.backref('student_course', lazy=True))
     
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
-    department = db.relationship('Department', backref=db.backref('student_department', lazy=True))
+    student_department = db.relationship('Department', backref=db.backref('student_department', lazy=True))
     
 
     __mapper_args__ = {
@@ -247,6 +247,12 @@ class Teacher(User):
     department = db.Column(db.String(80))
     nationality = db.Column(db.String(80))
     permanent_add = db.Column(db.Text)
+    
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    teacher_course = db.relationship('Course', backref=db.backref('teacher_course', lazy=True))
+    
+    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
+    teacher_department = db.relationship('Department', backref=db.backref('teacher_department', lazy=True))
 
     __mapper_args__ = {
         'polymorphic_identity': 'teacher',

@@ -163,23 +163,15 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            {{ form.course.label(class="text-label") }}
-                                            {% if form.course.errors %}
-                                            <div class="input-group input-danger">
-                                                {{ form.course(class="form-control is-invalid") }}
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text bg-transparent"> 
-                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
-                                                    </span>
-                                                </div>
-                                                {% for error in form.course.errors %}
-                                                <div class="invalid-feedback">{{ error }}</div>
+                                            <label for="" class=text-label>Course</label>
+                                            <select class="form-control single-select" name="course" id="course" required>
+                                                <option value="">Select a course</option>
+                                                {% if courses %}
+                                                {% for course in courses%}
+                                                <option value="{{ course.id }}">{{ course.name }}</option>
                                                 {% endfor %}
-                                            </div>
-                                            
-                                            {% else %}
-                                            {{ form.course(class="form-control") }}
-                                            {% endif %}
+                                                {% endif %}
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
@@ -290,28 +282,20 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            {{ form.department.label(class="text-label") }}
-                                            {% if form.department.errors %}
-                                            <div class="input-group input-danger">
-                                                {{ form.department(class="form-control is-invalid") }}
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text bg-transparent"> 
-                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
-                                                    </span>
-                                                </div>
-                                                {% for error in form.department.errors %}
-                                                <div class="invalid-feedback">{{ error }}</div>
+                                            <label for="" class=text-label>Department</label>
+                                            <select class="form-control single-select" name="department" id="department" required>
+                                                <option value="">Select a department</option>
+                                                {% if departments %}
+                                                {% for department in departments%}
+                                                <option value="{{ department.id }}">{{ department.name }}</option>
                                                 {% endfor %}
-                                            </div>
-                                            
-                                            {% else %}
-                                            {{ form.department(class="form-control") }}
-                                            {% endif %}
+                                                {% endif %}
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="" class="text-label">Profile Picture</label>
+                                    <label for="" class="text-label">Profile Picture</label> 
                                     <div class="dropify-default">
                                         <input type="file" class="dropify" name="teacher_pic"
                                         data-max-file-size="3M" 

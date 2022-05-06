@@ -24,6 +24,8 @@ def admin_dashboard():
 @admin_required
 def add_student():
     form = StudentAdmissionForm()
+    courses = Course.query.all()
+    departments = Department.query.all()
     if form.validate_on_submit():
         #Obtain students details
         first_name = form.first_name.data
@@ -31,14 +33,14 @@ def add_student():
         last_name = form.last_name.data
         mid_name = form.mid_name.data
         reg_date = form.reg_date.data
-        course = form.course.data
+        course = request.form.get('course')
         password = form.password.data
         mobile_no = form.mobile_no.data
         admission_no = form.admission_no.data
         birth_date = form.birth_date.data
         student_id = form.student_id.data
         student_class = form.student_class.data
-        department = form.department.data
+        department = request.form.get('department')
         religion = form.religion.data
         nationality = form.nationality.data
         father_name = form.father_name.data
@@ -68,12 +70,14 @@ def add_student():
                           father_occ=father_occ, mother_occ=mother_occ, father_email=father_email,
                           mother_email=mother_email, father_mobile_no=father_mobile_no,
                           mother_mobile_no=mother_mobile_no, present_add=present_add, 
-                          permanent_add=permanent_add, user_image=student_image)
+                          permanent_add=permanent_add, user_image=student_image, 
+                          course_id=course, department_id=department)
         db.session.add(student)
         db.session.commit()
         flash("Student details has been successfully added.", "success")
         return redirect(url_for('admin.add_student'))
-    return render_template('admin/add_student.html', title='Add Student Page', form=form)
+    return render_template('admin/add_student.html', title='Add Student Page', form=form,
+                           courses=courses, departments=departments)
 
 
 #Register Teachers
@@ -82,6 +86,8 @@ def add_student():
 @admin_required
 def add_teacher():
     form = TeacherAdmissionForm()
+    courses = Course.query.all()
+    departments = Department.query.all()
     if form.validate_on_submit():
         #Obtain teachers details
         first_name = form.first_name.data
@@ -89,12 +95,12 @@ def add_teacher():
         last_name = form.last_name.data
         mid_name = form.mid_name.data
         join_date = form.join_date.data
-        course = form.course.data
+        course = request.form.get('course')
         password = form.password.data
         mobile_no = form.mobile_no.data
         birth_date = form.birth_date.data
         teacher_id = form.teacher_id.data
-        department = form.department.data
+        department = request.form.get('department')
         nationality = form.nationality.data
         permanent_add = form.permanent_add.data
         account_type = form.account_type.data
@@ -109,13 +115,14 @@ def add_teacher():
         teacher = Teacher(first_name=first_name, last_name=last_name, mid_name=mid_name, join_date=join_date,
                           course=course, email=email, password=password, mobile_no=mobile_no, gender=gender,
                           birth_date=birth_date, teacher_id=teacher_id, department=department, 
-                          nationality=nationality, permanent_add=permanent_add, 
-                          user_image=teacher_image, account_type=account_type)
+                          nationality=nationality, permanent_add=permanent_add, course_id=course, 
+                          department_id=department, user_image=teacher_image, account_type=account_type)
         db.session.add(teacher)
         db.session.commit()
         flash("Teacher has been registered successfully.", "success")
         return redirect(url_for('admin.add_teacher'))
-    return render_template('admin/add_teacher.html', title='Add Teacher Page', form=form)
+    return render_template('admin/add_teacher.html', title='Add Teacher Page', form=form,
+                           courses=courses, departments=departments)
 
 #Add Users
 @admin.route('/register_user', methods=["GET", "POST"])
