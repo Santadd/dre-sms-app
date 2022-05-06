@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row page-titles">
             <div class="col p-md-0">
-                <h4>Dashboard</h4>
+                <h4>Dashboard</h4> 
             </div>
             <div class="col p-md-0">
                 <ol class="breadcrumb">
@@ -22,7 +22,7 @@
                         <div class="card">
                             <div class="card-body widget-school-stat bg-1 rounded">
                                 <div class="text">
-                                    <h2>2584</h2>
+                                    <h2>{{ no_of_students }}</h2>
                                     <p>Students</p>
                                 </div>
                                 <div class="icon">
@@ -35,7 +35,7 @@
                         <div class="card">
                             <div class="card-body widget-school-stat bg-2 rounded">
                                 <div class="text">
-                                    <h2>42</h2>
+                                    <h2>{{ no_of_teachers }}</h2>
                                     <p>Teachers</p>
                                 </div>
                                 <div class="icon">
@@ -48,7 +48,7 @@
                         <div class="card">
                             <div class="card-body widget-school-stat bg-3 rounded">
                                 <div class="text">
-                                    <h2>12</h2>
+                                    <h2>{{ no_of_new_students }}</h2>
                                     <p>New Students</p>
                                 </div>
                                 <div class="icon">
@@ -61,7 +61,7 @@
                         <div class="card">
                             <div class="card-body widget-school-stat bg-4 rounded">
                                 <div class="text">
-                                    <h2>30+</h2>
+                                    <h2>{{ no_of_courses - 2}}+</h2>
                                     <p>Courses</p>
                                 </div>
                                 <div class="icon">
@@ -87,7 +87,7 @@
                         <div class="card">
                             <div class="card-body widget-school-stat bg-6 rounded">
                                 <div class="text">
-                                    <h2>5</h2>
+                                    <h2>{{ no_of_departments }}</h2>
                                     <p>Departments</p>
                                 </div>
                                 <div class="icon">

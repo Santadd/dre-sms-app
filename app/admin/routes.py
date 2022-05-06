@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from app.admin import admin
 from app.admin.forms import (StudentAdmissionForm, UserRegistrationForm, TeacherAdmissionForm,
                              EditTeacherForm, EditStudentForm, EditUserForm, AddCourseForm, 
-                             AddDepartmentForm, EditCourseForm, EditDepartmentForm)
+                             AddDepartmentForm, EditCourseForm, EditDepartmentForm, UserEditForm)
 from app.admin.utils import save_student_image, save_teacher_image, save_user_image
 from app.models import Student, User, Teacher, Course, Department
 from app.auth.utils.email import send_email
@@ -15,7 +15,14 @@ import os
 @login_required
 @admin_required
 def admin_dashboard():
-    return render_template('admin/index.html', title='Main Dashboard') 
+    no_of_courses = Course.query.count()
+    no_of_teachers = Teacher.query.count()
+    no_of_departments = Department.query.count()
+    no_of_new_students = Student.query.count()
+    no_of_students = Student.query.count()
+    return render_template('admin/admin_dashboard.html', title='Main Dashboard', no_of_courses=no_of_courses,
+                           no_of_teachers=no_of_teachers, no_of_departments=no_of_departments,
+                           no_of_new_students=no_of_new_students, no_of_students=no_of_students) 
 
 
 #Register Students
@@ -540,3 +547,29 @@ def delete_department(department_id):
         db.session.commit()
         flash('Department has been deleted successfully', 'success')
         return redirect(url_for('admin.view_departments')) 
+    
+@admin.route('/profile_page', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def profile_page():
+    form = UserEditForm()
+    #If profile is edited, update user details
+    if form.validate_on_submit():
+        if form.password.data:
+            current_user.password = form.password.data
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.mid_name = form.mid_name.data
+        current_user.email = form.email.data
+        current_user.username = form.username.data
+        #Commit Changes
+        db.session.add(current_user._get_current_object())
+        db.session.commit()
+        flash('Your profile has been updated!', 'success') 
+        return redirect(url_for('admin.profile_page'))
+    form.first_name.data = current_user.first_name
+    form.last_name.data = current_user.last_name
+    form.mid_name.data = current_user.mid_name
+    form.email.data = current_user.email
+    form.username.data = current_user.username
+    return render_template('admin/profile_page.html', title='Profile Page', form=form)
