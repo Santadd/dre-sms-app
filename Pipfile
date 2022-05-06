@@ -14,6 +14,7 @@ pymysql = "*"
 email-validator = "*"
 itsdangerous = "==2.0.1"
 flask-uploads = "*"
+gunicorn = "*"
 
 [dev-packages]
 
