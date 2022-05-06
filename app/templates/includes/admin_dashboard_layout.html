@@ -94,9 +94,15 @@
                     <ul>
                         <li class="icons">
                             <a href="javascript:void(0)" class="log-user">
+                                {% if current_user.is_authenticated %}
                                 <img src="{{ url_for('static', filename='assets/images/users_profile/'+ current_user.user_image) }}"
                                     alt=""> <span>{{ current_user.username }}</span> <i class="fa fa-caret-down f-s-14"
                                     aria-hidden="true"></i>
+                                {% endif %}
+                                <img src="{{ url_for('static', filename='assets/images/users_profile/default.jpg') }}"
+                                    alt=""> <span>Anonymous</span> <i class="fa fa-caret-down f-s-14"
+                                    aria-hidden="true"></i>
+                                {% else %}
                             </a>
                             <div class="drop-down dropdown-profile animated bounceInDown">
                                 <div class="dropdown-content-body">

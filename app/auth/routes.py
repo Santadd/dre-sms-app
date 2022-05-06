@@ -14,7 +14,6 @@ def login():
     if form.validate_on_submit():
         #Query for user object
         user = User.query.filter_by(email=form.email.data).first()
-        print(user.role.name)
         #If user is found and password is correct, log user in
         if user is not None and user.verify_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
