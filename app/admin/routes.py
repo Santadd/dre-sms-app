@@ -11,8 +11,6 @@ from app.auth.utils.decorators import permission_required, admin_required
 import os
 
 @admin.route('/dashboard')
-@login_required
-@admin_required
 def admin_dashboard():
     return render_template('admin/index.html', title='Main Dashboard') 
 
