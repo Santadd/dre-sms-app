@@ -128,7 +128,7 @@ def register_user():
             user_image = 'default.jpg'
         user = User(first_name=form.first_name.data, last_name=form.last_name.data, 
                     mid_name=form.mid_name.data, username=form.username.data, email=form.email.data,
-                    password=form.password.data, user_image=user_image)
+                    password=form.password.data, user_image=user_image, account_type=form.account_type.data)
         db.session.add(user)
         db.session.commit()
         #Generate user token

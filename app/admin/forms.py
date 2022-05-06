@@ -131,6 +131,7 @@ class UserRegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', 
                                      validators=[InputRequired(), Length(min=8), 
                                     EqualTo('password', message="Passwords must match")])
+    account_type = HiddenField(default="User Account")
     
     submit = SubmitField('Register')
     
