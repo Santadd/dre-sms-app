@@ -22,9 +22,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/dropify/dist/css/dropify.min.css') }}">
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/select2/css/select2.min.css') }}">
+    <!-- fullcalendar -->
+    <link href="{{ url_for('static', filename='assets/plugins/fullcalendar/css/fullcalendar.min.css') }}" rel="stylesheet">
+
     <!-- Custom Stylesheet -->
     <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
-
+    
 </head>
 
 <body>
@@ -109,13 +112,8 @@
                                 <div class="dropdown-content-body">
                                     <ul>                                        
                                         <li>
-                                            <a href="javascript:void()">
+                                            <a href="{{ url_for('student.profile_page') }}">
                                                 <i class="icon-user"></i> <span>My Profile</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <i class="fa fa-cog"></i><span> Settings</span>
                                             </a>
                                         </li>
                                         <li>
@@ -149,13 +147,13 @@
                     </li>
                     <li class="nav-label">Main Menu</li> 
                     <li class="mega-menu mega-menu-lg">
-                        <a href="#">
+                        <a href="{{ url_for('student.view_departments') }}">
                             <i class="mdi mdi-office-building"></i><span class="nav-text">View Departments</span>
                         </a>
                     </li>
                     <li class="mega-menu mega-menu-lg">
-                        <a href="#">
-                            <i class="mdi mdi-book-open-variant"></i><span class="nav-text">My Courses</span>
+                        <a href="{{ url_for('student.my_course') }}">
+                            <i class="mdi mdi-book-open-variant"></i><span class="nav-text">My Course</span>
                         </a>
                     </li>
                     <li class="mega-menu mega-menu-lg">
@@ -171,30 +169,16 @@
                         </a>
                     </li>
                     <li class="mega-menu mega-menu-lg">
-                        <a class="" href="javascript:void()">
+                        <a class="" href="{{ url_for('student.event_page') }}">
                             <i class="mdi mdi-calendar-text"></i><span class="nav-text">Events</span>
-                        </a>
-                    </li>
-                    <li class="mega-menu mega-menu-lg">
-                        <a class="" href="javascript:void()">
-                            <i class="mdi mdi-table"></i><span class="nav-text">Time Table</span>
                         </a>
                     </li>
 
                     <li class="nav-label">Extras</li>
-                    <li class="mega-menu mega-menu-md">
-                        <a class="has-arrow" href="javascript:void()"
-                            aria-expanded="false"><i class="mdi mdi-settings"></i><span class="nav-text">Settings
-                            </span> <span class="badge badge-danger nav-badge">3</span>
+                    <li class="mega-menu mega-menu-lg">
+                        <a class="" href="{{ url_for('student.profile_page') }}">
+                            <i class="mdi mdi-account-circle"></i><span class="nav-text">View Profile</span>
                         </a>
-                        <ul aria-expanded="false">
-                            <li><a href="#">View Profile</a>
-                            </li>   
-                            <li><a href="#">Edit Profile</a>
-                            </li>   
-                            <li><a href="#">Change Password</a>
-                            </li>                            
-                        </ul>
                     </li>
                     <li class="mega-menu mega-menu-lg">
                         <a href="{{ url_for('auth.logout') }}">
@@ -868,6 +852,11 @@
 
     <script src="{{ url_for('static', filename='assets/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/plugins-init/select2-init.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='assets/plugins/jqueryui/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/fullcalendar/js/fullcalendar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/plugins-init/fullcalendar-init.js') }}"></script>
 </body>
 
 

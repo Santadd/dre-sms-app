@@ -216,6 +216,7 @@ class Student(User):
     mother_mobile_no = db.Column(db.String(80))
     present_add = db.Column(db.Text)
     permanent_add = db.Column(db.Text)
+    about_me = db.Column(db.Text, default='I am a student')
     
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     student_course = db.relationship('Course', backref=db.backref('student_course', lazy=True))
@@ -247,6 +248,7 @@ class Teacher(User):
     department = db.Column(db.String(80))
     nationality = db.Column(db.String(80))
     permanent_add = db.Column(db.Text)
+    about_me = db.Column(db.Text, default='I am a teacher')
     
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     teacher_course = db.relationship('Course', backref=db.backref('teacher_course', lazy=True))
