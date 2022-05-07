@@ -22,10 +22,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/dropify/dist/css/dropify.min.css') }}">
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/select2/css/select2.min.css') }}">
-    <!-- Custom Stylesheet -->
-    <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
     <!-- fullcalendar -->
     <link href="{{ url_for('static', filename='assets/plugins/fullcalendar/css/fullcalendar.min.css') }}" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
 
 </head>
 
@@ -111,13 +111,8 @@
                                 <div class="dropdown-content-body">
                                     <ul>                                        
                                         <li>
-                                            <a href="javascript:void()">
+                                            <a href="{{ url_for('teacher.profile_page') }}">
                                                 <i class="icon-user"></i> <span>My Profile</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <i class="fa fa-cog"></i><span> Settings</span>
                                             </a>
                                         </li>
                                         <li>
@@ -151,7 +146,7 @@
                     </li>
                     <li class="nav-label">Main Menu</li> 
                     <li class="mega-menu mega-menu-lg">
-                        <a href="#">
+                        <a href="{{ url_for('teacher.view_departments') }}">
                             <i class="mdi mdi-office-building"></i><span class="nav-text">View Departments</span>
                         </a>
                     </li>
@@ -159,12 +154,7 @@
                         <a href="#">
                             <i class="mdi mdi-school"></i><span class="nav-text">My Students</span>
                         </a>
-                    </li>
-                    <li class="mega-menu mega-menu-lg">
-                        <a href="#">
-                            <i class="mdi mdi-account-group"></i><span class="nav-text">Classes</span>
-                        </a>
-                    </li>
+                    </li>                    
                     <li class="mega-menu mega-menu-lg">
                         <a href="#">
                             <i class="mdi mdi-clipboard-text"></i><span class="nav-text">Exam Results</span>
@@ -178,30 +168,15 @@
                         </a>
                     </li>
                     <li class="mega-menu mega-menu-lg">
-                        <a class="" href="javascript:void()">
+                        <a class="" href="{{ url_for('teacher.event_page') }}">
                             <i class="mdi mdi-calendar-text"></i><span class="nav-text">Events</span>
                         </a>
                     </li>
-                    <li class="mega-menu mega-menu-lg">
-                        <a class="" href="javascript:void()">
-                            <i class="mdi mdi-table"></i><span class="nav-text">Time Table</span>
-                        </a>
-                    </li>
-
                     <li class="nav-label">Extras</li>
-                    <li class="mega-menu mega-menu-md">
-                        <a class="has-arrow" href="javascript:void()"
-                            aria-expanded="false"><i class="mdi mdi-settings"></i><span class="nav-text">Settings
-                            </span> <span class="badge badge-danger nav-badge">3</span>
+                    <li class="mega-menu mega-menu-lg">
+                        <a class="" href="{{ url_for('teacher.profile_page') }}">
+                            <i class="mdi mdi-account-circle"></i><span class="nav-text">View Profile</span>
                         </a>
-                        <ul aria-expanded="false">
-                            <li><a href="#">View Profile</a>
-                            </li>   
-                            <li><a href="#">Edit Profile</a>
-                            </li>   
-                            <li><a href="#">Change Password</a>
-                            </li>                            
-                        </ul>
                     </li>
                     <li class="mega-menu mega-menu-lg">
                         <a href="{{ url_for('auth.logout') }}">
