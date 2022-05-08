@@ -1,0 +1,64 @@
+{% extends 'includes/admin_dashboard_layout.html' %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col p-md-0">
+                <h4>School Settings</h4>
+            </div>
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a>
+                    </li>
+                    <!-- <li class="breadcrumb-item"><a href="javascript:void()">Forms</a>
+                    </li> -->
+                    <li class="breadcrumb-item active">School Settings
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                {% include "includes/messages.html" %}
+                <div class="card forms-card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">School Settings</h4>
+                        <div class="basic-form">
+                            <form method="POST">
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label for="" class="text-label">School Name</label>
+                                            <input type="text" class="form-control" value="{{ school.school_name }}" 
+                                            name="school_name" id="school_name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="text-label">School Slogan</label>
+                                            <input type="text" class="form-control" value="{{ school.school_slogan }}"
+                                            name="school_slogan" id="school_slogan">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label for="" class="text-label">School Address</label>
+                                            <textarea type="text" class="form-control" rows="7"
+                                            name="school_address" id="school_address">{{ school.school_address }}
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>                          
+                                <button type="submit" class="btn btn-primary btn-form mr-2">Save</button>                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- #/ container -->
+</div>
+{% endblock content %}

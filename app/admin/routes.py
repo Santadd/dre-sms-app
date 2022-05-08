@@ -1,3 +1,4 @@
+from contextlib import redirect_stderr
 from flask import current_app, redirect, render_template, url_for, request, flash
 from app import db
 from flask_login import current_user, login_required
@@ -6,7 +7,7 @@ from app.admin.forms import (StudentAdmissionForm, UserRegistrationForm, Teacher
                              EditTeacherForm, EditStudentForm, EditUserForm, AddCourseForm, 
                              AddDepartmentForm, EditCourseForm, EditDepartmentForm, UserEditForm)
 from app.admin.utils import save_student_image, save_teacher_image, save_user_image
-from app.models import Student, User, Teacher, Course, Department
+from app.models import Student, User, Teacher, Course, Department, SchoolSetting
 from app.auth.utils.email import send_email
 from app.auth.utils.decorators import permission_required, admin_required
 import os
@@ -603,5 +604,91 @@ def profile_page():
 #View events
 @admin.route('/events')
 @login_required
+@admin_required
 def event_page():
     return render_template('admin/events.html', title='Events Page')
+
+
+@admin.route('/school_settings', methods=['POST', 'GET'])
+@login_required
+@admin_required
+def school_settings():
+    #Get the school settings
+    school = SchoolSetting.query.first()
+    if request.method == "POST":
+        if school:
+            school.school_name = request.form.get('school_name')
+            school.school_slogan = request.form.get('school_slogan')
+            school.school_address = request.form.get('school_address')
+        else:
+            new_details = SchoolSetting(school_name=request.form.get('school_name'), school_slogan=request.form.get('school_slogan'),
+                                 school_address=request.form.get('school_address'))
+            db.session.add(new_details)
+        db.session.commit()
+        flash("School settings updated successfully", "success")
+        return redirect(url_for('admin.school_settings'))
+    return render_template('admin/school_settings.html', title='School Settings', school=school)
+
+
+#View teachers Salary
+@admin.route('/view_salary')
+@login_required
+@admin_required
+def view_salary():
+    teachers = Teacher.query.all()
+    return render_template('admin/view_salary.html', title='View Salary', teachers=teachers)
+
+#Edit teachers Salary
+@admin.route('/edit_salary/<teacher_id>', methods=['POST'])
+@login_required
+@admin_required
+def edit_salary(teacher_id):
+    teacher = Teacher.query.filter_by(teacher_id=teacher_id).first()
+    if request.method == "POST":
+        teacher.salary = request.form.get('teacher_salary')
+        db.session.commit()
+        flash(f'{teacher.first_name}\'s salary has been updated', 'success')
+        return redirect(url_for('admin.view_salary'))
+    
+    
+#View Students fees
+@admin.route('/view_fees')
+@login_required
+@admin_required
+def view_fees():
+    students = Student.query.all()
+    return render_template('admin/view_fees.html', title='View fees', students=students)
+
+#Edit Students fees
+@admin.route('/edit_fees/<student_id>', methods=['POST'])
+@login_required
+@admin_required
+def edit_fees(student_id):
+    student = Student.query.filter_by(student_id=student_id).first()
+    if request.method == "POST":
+        student.fees = request.form.get('student_fees')
+        db.session.commit()
+        flash(f'{student.first_name}\'s fees has been updated', 'success')
+        return redirect(url_for('admin.view_fees'))
+    
+#View Students Results
+@admin.route('/view_results')
+@login_required
+@admin_required
+def view_results():
+    students = Student.query.all()
+    return render_template('admin/view_results.html', title='View Results', students=students)
+
+#Edit Students Results
+@admin.route('/edit_results/<student_id>', methods=['POST'])
+@login_required
+@admin_required
+def edit_results(student_id):
+    student = Student.query.filter_by(student_id=student_id).first()
+    if request.method == "POST":
+        student.results = request.form.get('student_results')
+        db.session.commit()
+        flash(f'{student.first_name}\'s results has been updated', 'success')
+        return redirect(url_for('admin.view_results'))
+    
+    

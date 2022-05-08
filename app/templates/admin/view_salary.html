@@ -1,0 +1,122 @@
+{% extends 'includes/admin_dashboard_layout.html' %}
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col p-md-0">
+                <h4>All <span>Salaries</span></h4>
+            </div>
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">View Salary</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                {% include "includes/messages.html" %}
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h4 class="card-title">All Salary</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="example-style display" style="min-width: 845px">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name of Teacher</th>
+                                    <th>ID of Teacher</th>
+                                    <th>Department</th>
+                                    <th>Salary</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for teacher in teachers %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ teacher.first_name }} {{ teacher.mid_name }} {{ teacher.last_name }}</td>
+                                    <td>{{ teacher.teacher_id }}</td>
+                                    <td>{{ teacher.teacher_department.name }}</td>
+                                    <td>GHS 
+                                        {% if not teacher.salary %}
+                                        0.00
+                                        {% else %}
+                                        {{ teacher.salary }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span>
+                                            <a href="javascript:void()" data-toggle="modal" 
+                                                data-placement="top" title="Edit" data-target="#basicModal-{{ teacher.id }}" 
+                                                data-original-title="Edit">
+                                                <i class="fa fa-pencil color-primary"></i>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!-- Modal -->
+                                <div class="modal fade" id="basicModal-{{ teacher.id }}">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><strong>Teacher ID:</strong> {{ teacher.teacher_id }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="color: black;">
+                                                <form method="POST" 
+                                                    action="{{ url_for('admin.edit_salary', teacher_id=teacher.teacher_id) }}">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label for="" class="text-label">Teacher's Name</label>
+                                                                <input type="text" class="form-control" 
+                                                                value="{{ teacher.first_name }} {{ teacher.mid_name }} {{ teacher.last_name }}"
+                                                                name="teacher_name" id="teacher_name" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label for="" class="text-label">Teacher's Salary</label>
+                                                                <input type="number" class="form-control" value="{{ teacher.salary }}"
+                                                                name="teacher_salary" id="teacher_salary">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-success">Save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name of Teacher</th>
+                                    <th>ID of Teacher</th>
+                                    <th>Department</th>
+                                    <th>Salary</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+{% endblock content %}

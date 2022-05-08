@@ -215,6 +215,8 @@ class Student(User):
     present_add = db.Column(db.Text)
     permanent_add = db.Column(db.Text)
     about_me = db.Column(db.Text, default='I am a student')
+    fees = db.Column(db.Numeric(10, 2))
+    results = db.Column(db.Numeric)
     
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     student_course = db.relationship('Course', backref=db.backref('student_course', lazy=True))
@@ -245,6 +247,7 @@ class Teacher(User):
     nationality = db.Column(db.String(80))
     permanent_add = db.Column(db.Text)
     about_me = db.Column(db.Text, default='I am a teacher')
+    salary = db.Column(db.Numeric(10, 2))
     
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     teacher_course = db.relationship('Course', backref=db.backref('teacher_course', lazy=True))
@@ -278,4 +281,15 @@ class Course(db.Model):
     
     def __repr__(self):
         return "<Course %r>" %self.name
+    
+#School Settings
+class SchoolSetting(db.Model):
+    __tablename__ = 'schoolsettings'
+    id = db.Column(db.Integer, primary_key=True)
+    school_name = db.Column(db.String(50))
+    school_slogan = db.Column(db.String(50))
+    school_address = db.Column(db.Text)
+    
+    def __repr__(self):
+        return "<SchoolSetting %r>" %self.school_name
     
