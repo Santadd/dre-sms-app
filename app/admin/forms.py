@@ -102,11 +102,9 @@ class EditTeacherForm(FlaskForm):
     email = StringField('Email', validators=[Email()])
     password = PasswordField('Password')
     join_date = StringField('Joining Date')
-    course = StringField('Course')
     mobile_no = StringField('Mobile Number')
     birth_date = StringField('Birth Date')
     teacher_id = StringField('Teacher ID')
-    department = StringField('Department')
     nationality = StringField('Nationality')
     permanent_add = TextAreaField('Permanent Address')
     

@@ -67,7 +67,7 @@
                                 <ul class="nav nav-tabs">                                    
                                     <li class="nav-item"><a href="#about-me" data-toggle="tab" class="nav-link active show">About Me</a>
                                     </li>
-                                    <li class="nav-item"><a href="#profile-settings" data-toggle="tab" class="nav-link">Setting</a>
+                                    <li class="nav-item"><a href="#profile-settings" data-toggle="tab" class="nav-link">Settings</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
@@ -75,10 +75,12 @@
                                         <div class="profile-about-me">
                                             <div class="pt-4 border-bottom-1 pb-4">
                                                 <h4 class="text-primary">About Me</h4>
-                                                <p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence was created for the
-                                                    bliss of souls like mine.I am so happy, my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents.</p>
-                                                <p>A collection of textile samples lay spread out on the table - Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed
-                                                    in a nice, gilded frame.</p>
+                                                <p>
+                                                    Proven ability to create and deliver solutions tied to business growth, 
+                                                    organizational development and systems/network optimization.Skilled problem 
+                                                    identifier and troubleshooter comfortable managing systems, projects 
+                                                    and teams in a range of IT environments.
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="profile-skills pt-5 border-bottom-1 pb-5">
@@ -165,7 +167,17 @@
                                                         <div class="form-group col-md-6">
                                                             {{ form.password.label() }}
                                                             {{ form.password(class="form-control") }}
-                                                        </div>                                                                                                                
+                                                        </div> 
+                                                                                                                                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="" class="text-label">Profile Picture</label>
+                                                        <div class="dropify-default">
+                                                            <input type="file" class="dropify" name="user_pic"
+                                                            data-default-file="{{ url_for('static', filename='assets/images/users_profile/'+ current_user.user_image) }}"
+                                                            data-max-file-size="3M" 
+                                                            data-allowed-file-extensions="pdf png psd jpeg jpg gif"/>
+                                                        </div>
                                                     </div>
                                                     {{ form.submit(class="btn btn-primary") }}
                                                 </form>

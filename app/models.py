@@ -192,18 +192,16 @@ login_manager.anonymous_user = AnonymousUser
 
 #Create Student Model
 class Student(User):  
-    __tablename__ = 'student'
+    __tablename__ = 'students'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     reg_date = db.Column(db.String(80))
-    course = db.Column(db.String(80))
     mobile_no = db.Column(db.String(80))
     gender = db.Column(db.String(80))
     admission_no = db.Column(db.String(80))
     birth_date = db.Column(db.String(80))
     student_id = db.Column(db.String(80), index=True)
     student_class = db.Column(db.String(80))
-    department = db.Column(db.String(80))
     religion = db.Column(db.String(80))
     nationality = db.Column(db.String(80))
     father_name = db.Column(db.String(80))
@@ -240,12 +238,10 @@ class Teacher(User):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     join_date = db.Column(db.String(80))
-    course = db.Column(db.String(80))
     mobile_no = db.Column(db.String(80))
     gender = db.Column(db.String(80))
     birth_date = db.Column(db.String(80))
     teacher_id = db.Column(db.String(80), index=True)
-    department = db.Column(db.String(80))
     nationality = db.Column(db.String(80))
     permanent_add = db.Column(db.Text)
     about_me = db.Column(db.Text, default='I am a teacher')

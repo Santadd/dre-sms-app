@@ -119,11 +119,6 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void()">
-                                                <i class="fa fa-cog"></i><span> Settings</span>
-                                            </a>
-                                        </li>
-                                        <li>
                                             <a href="{{ url_for('auth.logout') }}">
                                                 <i class="icon-power"></i> <span>Logout</span>
                                             </a>
@@ -237,21 +232,16 @@
                         </ul>
                     </li>
                     <li class="mega-menu mega-menu-lg">
-                        <a class="" href="javascript:void()">
+                        <a class="" href="{{ url_for('admin.event_page') }}">
                             <i class="mdi mdi-calendar-text"></i><span class="nav-text">Events</span>
                         </a>
-                    </li>
-                    <li class="mega-menu mega-menu-lg">
-                        <a class="" href="javascript:void()">
-                            <i class="mdi mdi-table"></i><span class="nav-text">Time Table</span>
-                        </a>
-                    </li>
+                    </li>                   
 
                     <li class="nav-label">Extras</li>
                     <li class="mega-menu mega-menu-md">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="mdi mdi-settings"></i><span class="nav-text">Settings
-                            </span> <span class="badge badge-danger nav-badge">4</span>
+                            </span> <span class="badge badge-danger nav-badge">3</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="#">School Settings</a>
@@ -269,9 +259,7 @@
                             </li>
                             <li><a href="#">Role and Permissions</a>
                             </li>
-                    </li>
-                    <li><a href="#">Change Password</a>
-                    </li>
+                    </li>                    
                 </ul>
                 </li>
                 <li class="mega-menu mega-menu-lg">

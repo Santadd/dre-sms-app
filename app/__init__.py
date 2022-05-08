@@ -16,7 +16,7 @@ login_manager.login_message_category = 'warning'
 #Create factory application for the app
 def create_app(config_name):
     #Initialise the flask app
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path='/static')
     app.config.from_object(config[config_name])
     #Initialize the config object
     config[config_name].init_app(app)

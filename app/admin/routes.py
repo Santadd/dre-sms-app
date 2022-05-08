@@ -11,6 +11,16 @@ from app.auth.utils.email import send_email
 from app.auth.utils.decorators import permission_required, admin_required
 import os
 
+#Define function to get courses
+def get_courses():
+    courses = Course.query.all()
+    return courses
+
+#Define function to get departments
+def  get_departments():
+    departments = Department.query.all()
+    return departments
+
 @admin.route('/dashboard')
 @login_required
 @admin_required
@@ -31,8 +41,6 @@ def admin_dashboard():
 @admin_required
 def add_student():
     form = StudentAdmissionForm()
-    courses = Course.query.all()
-    departments = Department.query.all()
     if form.validate_on_submit():
         #Obtain students details
         first_name = form.first_name.data
@@ -70,9 +78,9 @@ def add_student():
         
         #Create a student instance and add details to database
         student = Student(first_name=first_name, last_name=last_name, mid_name=mid_name, reg_date=reg_date,
-                          course=course, email=email, password=password, mobile_no=mobile_no, gender=gender,
+                          email=email, password=password, mobile_no=mobile_no, gender=gender,
                           admission_no=admission_no, birth_date=birth_date, student_id=student_id, 
-                          student_class=student_class, department=department, religion=religion,
+                          student_class=student_class, religion=religion,
                           nationality=nationality, father_name=father_name, mother_name=mother_name,
                           father_occ=father_occ, mother_occ=mother_occ, father_email=father_email,
                           mother_email=mother_email, father_mobile_no=father_mobile_no,
@@ -84,7 +92,7 @@ def add_student():
         flash("Student details has been successfully added.", "success")
         return redirect(url_for('admin.add_student'))
     return render_template('admin/add_student.html', title='Add Student Page', form=form,
-                           courses=courses, departments=departments)
+                           courses=get_courses(), departments=get_departments())
 
 
 #Register Teachers
@@ -93,8 +101,6 @@ def add_student():
 @admin_required
 def add_teacher():
     form = TeacherAdmissionForm()
-    courses = Course.query.all()
-    departments = Department.query.all()
     if form.validate_on_submit():
         #Obtain teachers details
         first_name = form.first_name.data
@@ -120,8 +126,8 @@ def add_teacher():
             teacher_image = 'default.jpg'
         #Create a teacher instance and add details to database
         teacher = Teacher(first_name=first_name, last_name=last_name, mid_name=mid_name, join_date=join_date,
-                          course=course, email=email, password=password, mobile_no=mobile_no, gender=gender,
-                          birth_date=birth_date, teacher_id=teacher_id, department=department, 
+                          email=email, password=password, mobile_no=mobile_no, gender=gender,
+                          birth_date=birth_date, teacher_id=teacher_id, 
                           nationality=nationality, permanent_add=permanent_add, course_id=course, 
                           department_id=department, user_image=teacher_image, account_type=account_type)
         db.session.add(teacher)
@@ -129,7 +135,7 @@ def add_teacher():
         flash("Teacher has been registered successfully.", "success")
         return redirect(url_for('admin.add_teacher'))
     return render_template('admin/add_teacher.html', title='Add Teacher Page', form=form,
-                           courses=courses, departments=departments)
+                           courses=get_courses(), departments=get_departments())
 
 #Add Users
 @admin.route('/register_user', methods=["GET", "POST"])
@@ -208,10 +214,10 @@ def edit_student(student_id):
         student.mid_name = form.mid_name.data
         student.email = form.email.data
         student.reg_date = form.reg_date.data
-        student.course = form.course.data
+        student.course_id = request.form.get('course')
         student.mobile_no = form.mobile_no.data
         student.nationality = form.nationality.data
-        student.department = form.department.data
+        student.department_id = request.form.get('department')
         student.birth_date = form.birth_date.data
         student.student_id = form.student_id.data
         student.permanent_add = form.permanent_add.data
@@ -232,8 +238,12 @@ def edit_student(student_id):
         #If new image is submitted, replace old image with the new one
         if request.files.get('student_pic'):
             try:
-                os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +student.user_image))
-                student.user_image = save_student_image(request.files.get('student_pic'))
+                #Prevent default image from being deleted
+                if student.user_image == 'default.jpg':
+                    student.user_image = save_student_image(request.files.get('student_pic'))
+                else:
+                    os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +student.user_image))
+                    student.user_image = save_student_image(request.files.get('student_pic'))
             except:
                 student.user_image = save_student_image(request.files.get('student_pic'))
                 
@@ -247,10 +257,8 @@ def edit_student(student_id):
     form.mid_name.data = student.mid_name
     form.email.data = student.email
     form.reg_date.data = student.reg_date
-    form.course.data = student.course
     form.mobile_no.data = student.mobile_no
     form.nationality.data = student.nationality
-    form.department.data = student.department
     form.birth_date.data = student.birth_date
     form.student_id.data = student.student_id
     form.permanent_add.data = student.permanent_add
@@ -267,7 +275,8 @@ def edit_student(student_id):
     form.mother_mobile_no.data = student.mother_mobile_no
     form.present_add.data = student.present_add
     return render_template('admin/edit_student.html', title='Edit Student Page', 
-                           student=student, form=form)
+                           student=student, form=form, 
+                           courses=get_courses(), departments=get_departments())
 
 #Delete Students
 @admin.route('/delete_student/<student_id>', methods=['POST'])
@@ -321,19 +330,23 @@ def edit_teacher(teacher_id):
         teacher.mid_name = form.mid_name.data
         teacher.email = form.email.data
         teacher.join_date = form.join_date.data
-        teacher.course = form.course.data
+        teacher.course_id = request.form.get('course')
         teacher.mobile_no = form.mobile_no.data
         teacher.nationality = form.nationality.data
         teacher.birth_date = form.birth_date.data
         teacher.teacher_id = form.teacher_id.data
         teacher.permanent_add = form.permanent_add.data
-        teacher.department = form.department.data
+        teacher.department_id = request.form.get('department')
         teacher.gender = request.form.get('gender')
         #If new image is submitted, replace old image with the new one
         if request.files.get('teacher_pic'):
             try:
-                os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +teacher.user_image))
-                teacher.user_image = save_teacher_image(request.files.get('teacher_pic'))
+                #Prevent deletion of default image
+                if teacher.user_image == 'default.jpg':
+                    teacher.user_image = save_teacher_image(request.files.get('teacher_pic'))
+                else:
+                    os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +teacher.user_image))
+                    teacher.user_image = save_teacher_image(request.files.get('teacher_pic'))
             except:
                 teacher.user_image = save_teacher_image(request.files.get('teacher_pic'))
         #commit update to database
@@ -346,15 +359,14 @@ def edit_teacher(teacher_id):
     form.mid_name.data = teacher.mid_name
     form.email.data = teacher.email
     form.join_date.data = teacher.join_date
-    form.course.data = teacher.course
     form.mobile_no.data = teacher.mobile_no
     form.nationality.data = teacher.nationality
     form.birth_date.data = teacher.birth_date
     form.teacher_id.data = teacher.teacher_id
     form.permanent_add.data = teacher.permanent_add
-    form.department.data = teacher.department
     return render_template('admin/edit_teacher.html', title='Edit Teacher Page', 
-                           teacher=teacher, form=form)
+                           teacher=teacher, form=form,
+                           courses=get_courses(), departments=get_departments())
 
 #Delete Teachers
 @admin.route('/delete_teacher/<teacher_id>', methods=['POST'])
@@ -400,8 +412,12 @@ def edit_user(user_id):
         #If new image is submitted, replace old image with the new one
         if request.files.get('user_pic'):
             try:
-                os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +user.user_image))
-                user.user_image = save_user_image(request.files.get('user_pic'))
+                #Prevent deletion of default image
+                if user.user_image == 'default.jpg':
+                    user.user_image = save_user_image(request.files.get('user_pic'))
+                else:
+                    os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +user.user_image))
+                    user.user_image = save_user_image(request.files.get('user_pic'))
             except:
                 user.user_image = save_user_image(request.files.get('user_pic'))
         #commit update to database
@@ -562,6 +578,17 @@ def profile_page():
         current_user.mid_name = form.mid_name.data
         current_user.email = form.email.data
         current_user.username = form.username.data
+        #If new image is submitted, replace old image with the new one
+        if request.files.get('user_pic'):
+            try:
+                #prevent deletion of default image
+                if current_user.user_image == 'default.jpg':
+                    current_user.user_image = save_user_image(request.files.get('user_pic'))
+                else:
+                    os.unlink(os.path.join(current_app.root_path, "static/assets/images/users_profile/" +current_user.user_image))
+                    current_user.user_image = save_user_image(request.files.get('user_pic'))
+            except:
+                current_user.user_image = save_user_image(request.files.get('user_pic'))
         #Commit Changes
         db.session.add(current_user._get_current_object())
         db.session.commit()
@@ -573,3 +600,9 @@ def profile_page():
     form.email.data = current_user.email
     form.username.data = current_user.username
     return render_template('admin/profile_page.html', title='Profile Page', form=form)
+
+#View events
+@admin.route('/events')
+@login_required
+def event_page():
+    return render_template('admin/events.html', title='Events Page')
