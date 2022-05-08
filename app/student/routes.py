@@ -10,8 +10,9 @@ from app.models import Student, Department
 @login_required
 def student_dashboard():
     no_of_departments = Department.query.count()
+    students_in_class = Student.query.filter_by(studentclass_id = current_user.studentclass_id).count()
     return render_template('student/student_dashboard.html', title='My Dashboard', 
-                           no_of_departments=no_of_departments)
+                           no_of_departments=no_of_departments, students_in_class=students_in_class)
 
 
 #Students Profile page

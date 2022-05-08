@@ -12,6 +12,7 @@ from app.models import Student, User, Teacher, Course, Department, SchoolSetting
 from app.auth.utils.email import send_email
 from app.auth.utils.decorators import permission_required, admin_required
 import os
+from sqlalchemy import func
 
 #Define function to get courses
 def get_courses():
@@ -23,6 +24,11 @@ def  get_departments():
     departments = Department.query.all()
     return departments
 
+#Define function to get classes
+def  get_studentclasses():
+    studentclasses = StudentClass.query.all()
+    return studentclasses
+
 @admin.route('/dashboard')
 @login_required
 @admin_required
@@ -32,9 +38,11 @@ def admin_dashboard():
     no_of_departments = Department.query.count()
     no_of_new_students = Student.query.count()
     no_of_students = Student.query.count()
+    total_fees = Student.query.with_entities(func.sum(Student.fees)).scalar()
     return render_template('admin/admin_dashboard.html', title='Main Dashboard', no_of_courses=no_of_courses,
                            no_of_teachers=no_of_teachers, no_of_departments=no_of_departments,
-                           no_of_new_students=no_of_new_students, no_of_students=no_of_students) 
+                           no_of_new_students=no_of_new_students, no_of_students=no_of_students,
+                           total_fees=total_fees) 
 
 
 #Register Students
@@ -56,7 +64,7 @@ def add_student():
         admission_no = form.admission_no.data
         birth_date = form.birth_date.data
         student_id = form.student_id.data
-        student_class = form.student_class.data
+        student_class = request.form.get('studentclass')
         department = request.form.get('department')
         religion = form.religion.data
         nationality = form.nationality.data
@@ -82,19 +90,19 @@ def add_student():
         student = Student(first_name=first_name, last_name=last_name, mid_name=mid_name, reg_date=reg_date,
                           email=email, password=password, mobile_no=mobile_no, gender=gender,
                           admission_no=admission_no, birth_date=birth_date, student_id=student_id, 
-                          student_class=student_class, religion=religion,
-                          nationality=nationality, father_name=father_name, mother_name=mother_name,
-                          father_occ=father_occ, mother_occ=mother_occ, father_email=father_email,
-                          mother_email=mother_email, father_mobile_no=father_mobile_no,
-                          mother_mobile_no=mother_mobile_no, present_add=present_add, 
-                          permanent_add=permanent_add, user_image=student_image, 
-                          course_id=course, department_id=department)
+                          religion=religion, nationality=nationality, father_name=father_name, 
+                          mother_name=mother_name, father_occ=father_occ, mother_occ=mother_occ, 
+                          father_email=father_email, mother_email=mother_email, 
+                          father_mobile_no=father_mobile_no, mother_mobile_no=mother_mobile_no, 
+                          present_add=present_add, permanent_add=permanent_add, user_image=student_image, 
+                          course_id=course, department_id=department, studentclass_id=student_class)
         db.session.add(student)
         db.session.commit()
         flash("Student details has been successfully added.", "success")
         return redirect(url_for('admin.add_student'))
     return render_template('admin/add_student.html', title='Add Student Page', form=form,
-                           courses=get_courses(), departments=get_departments())
+                           courses=get_courses(), departments=get_departments(), 
+                           studentclasses=get_studentclasses())
 
 
 #Register Teachers
@@ -223,7 +231,7 @@ def edit_student(student_id):
         student.student_id = form.student_id.data
         student.permanent_add = form.permanent_add.data
         student.admission_no = form.admission_no.data
-        student.student_class = form.student_class.data
+        student.studentclass_id = request.form.get('studentclass')
         student.religion = form.religion.data
         student.father_name = form.father_name.data
         student.mother_name = form.mother_name.data
@@ -264,7 +272,6 @@ def edit_student(student_id):
     form.student_id.data = student.student_id
     form.permanent_add.data = student.permanent_add
     form.admission_no.data = student.admission_no
-    form.student_class.data = student.student_class
     form.religion.data = student.religion
     form.father_name.data = student.father_name
     form.mother_name.data = student.mother_name
@@ -277,7 +284,8 @@ def edit_student(student_id):
     form.present_add.data = student.present_add
     return render_template('admin/edit_student.html', title='Edit Student Page', 
                            student=student, form=form, 
-                           courses=get_courses(), departments=get_departments())
+                           courses=get_courses(), departments=get_departments(), 
+                           studentclasses=get_studentclasses())
 
 #Delete Students
 @admin.route('/delete_student/<student_id>', methods=['POST'])
@@ -724,7 +732,7 @@ def view_class():
 def edit_class(studentclass_id):
     form = EditStudentClassForm()
     studentclass = StudentClass.query.filter_by(id=studentclass_id).first_or_404()
-    #Update studentclass details
+    #Update student class 
     if form.validate_on_submit():
         studentclass.name = form.studentclass.data
         #Commit new changes
@@ -740,7 +748,7 @@ def edit_class(studentclass_id):
 @admin_required
 def delete_class(studentclass_id):
     studentclass = StudentClass.query.filter_by(id=studentclass_id).first_or_404()
-    #Delete studentclass
+    #Delete student class
     if request.method == "POST":
         db.session.delete(studentclass)
         #Commit new changes

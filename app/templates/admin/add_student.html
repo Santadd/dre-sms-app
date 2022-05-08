@@ -9,7 +9,7 @@
             </div>
             <div class="col p-md-0">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a>
+                    <li class="breadcrumb-item"><a href="{{ url_for('main.homepage') }}">Home</a>
                     </li>
                     <!-- <li class="breadcrumb-item"><a href="javascript:void()">Forms</a>
                     </li> -->
@@ -276,23 +276,15 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            {{ form.student_class.label(class="text-label") }}
-                                            {% if form.student_class.errors %}
-                                            <div class="input-group input-danger">
-                                                {{ form.student_class(class="form-control is-invalid") }}
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text bg-transparent"> 
-                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i> 
-                                                    </span>
-                                                </div>
-                                                {% for error in form.student_class.errors %}
-                                                <div class="invalid-feedback">{{ error }}</div>
+                                            <label for="" class=text-label>Class</label>
+                                            <select class="form-control single-select" name="studentclass" id="studentclass" required>
+                                                <option value="">Select a class</option>
+                                                {% if studentclasses %}
+                                                {% for studentclass in studentclasses%}
+                                                <option value="{{ studentclass.id }}">{{ studentclass.name }}</option>
                                                 {% endfor %}
-                                            </div>
-                                            
-                                            {% else %}
-                                            {{ form.student_class(class="form-control") }}
-                                            {% endif %}
+                                                {% endif %}
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
