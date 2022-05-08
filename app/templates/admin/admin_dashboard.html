@@ -61,7 +61,13 @@
                         <div class="card">
                             <div class="card-body widget-school-stat bg-4 rounded">
                                 <div class="text">
-                                    <h2>{{ no_of_courses - 2}}+</h2>
+                                    <h2>
+                                        {% if no_of_courses >= 4 %}
+                                        {{ no_of_courses-1 }}+
+                                        {% else %}
+                                        {{ no_of_courses }}
+                                        {% endif %}
+                                    </h2>
                                     <p>Courses</p>
                                 </div>
                                 <div class="icon">
