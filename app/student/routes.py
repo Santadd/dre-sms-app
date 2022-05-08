@@ -43,6 +43,18 @@ def my_course():
 def event_page():
     return render_template('student/events.html', title='Events Page')
 
+#View fees
+@student.route('/fees')
+@login_required
+def fee_page():
+    return render_template('student/fees.html', title='Fees Page')
+
+#View results
+@student.route('/results')
+@login_required
+def result_page():
+    return render_template('student/results.html', title='Results Page')
+
 #View deparments
 @student.route('/all_departments')
 @login_required

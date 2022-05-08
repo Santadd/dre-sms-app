@@ -1,0 +1,58 @@
+{% extends 'includes/student_dashboard_layout.html' %}
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col p-md-0">
+                <h4>My <span>Fees</span></h4>
+            </div>
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('main.homepage') }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">View Fees</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                {% include "includes/messages.html" %}
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h4 class="card-title">Fees</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="example-style display" style="min-width: 845px">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Department</th>
+                                    <th>Fee</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ current_user.student_course.name }}</td>
+                                    <td>{{ current_user.student_department.name }}</td>
+                                    <td>{{ current_user.fees }}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Department</th>
+                                    <th>Fee</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+{% endblock content %}
