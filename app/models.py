@@ -201,7 +201,6 @@ class Student(User):
     admission_no = db.Column(db.String(80))
     birth_date = db.Column(db.String(80))
     student_id = db.Column(db.String(80), index=True)
-    student_class = db.Column(db.String(80))
     religion = db.Column(db.String(80))
     nationality = db.Column(db.String(80))
     father_name = db.Column(db.String(80))
@@ -220,6 +219,9 @@ class Student(User):
     
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     student_course = db.relationship('Course', backref=db.backref('student_course', lazy=True))
+    
+    studentclass_id = db.Column(db.Integer, db.ForeignKey('studentclasses.id'))
+    student_class = db.relationship('StudentClass', backref=db.backref('student_class', lazy=True))
     
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
     student_department = db.relationship('Department', backref=db.backref('student_department', lazy=True))
@@ -281,6 +283,15 @@ class Course(db.Model):
     
     def __repr__(self):
         return "<Course %r>" %self.name
+    
+#Class Model
+class StudentClass(db.Model):
+    __tablename__ = "studentclasses"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False, unique=True)
+    
+    def __repr__(self):
+        return "<StudentClass %r>" %self.name
     
 #School Settings
 class SchoolSetting(db.Model):

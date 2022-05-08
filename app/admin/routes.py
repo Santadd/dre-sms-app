@@ -5,9 +5,10 @@ from flask_login import current_user, login_required
 from app.admin import admin
 from app.admin.forms import (StudentAdmissionForm, UserRegistrationForm, TeacherAdmissionForm,
                              EditTeacherForm, EditStudentForm, EditUserForm, AddCourseForm, 
-                             AddDepartmentForm, EditCourseForm, EditDepartmentForm, UserEditForm)
+                             AddDepartmentForm, EditCourseForm, EditDepartmentForm, UserEditForm,
+                             AddStudentClassForm, EditStudentClassForm)
 from app.admin.utils import save_student_image, save_teacher_image, save_user_image
-from app.models import Student, User, Teacher, Course, Department, SchoolSetting
+from app.models import Student, User, Teacher, Course, Department, SchoolSetting, StudentClass
 from app.auth.utils.email import send_email
 from app.auth.utils.decorators import permission_required, admin_required
 import os
@@ -691,4 +692,58 @@ def edit_results(student_id):
         flash(f'{student.first_name}\'s results has been updated', 'success')
         return redirect(url_for('admin.view_results'))
     
-    
+
+#Add a class
+@admin.route('/add_class', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def add_class():
+    form = AddStudentClassForm()
+    if form.validate_on_submit():
+        #Create a class instance and add to the database
+        studentclass = StudentClass(name=form.studentclass.data)
+        db.session.add(studentclass)
+        db.session.commit()
+        flash('class has been added successfully', 'success')
+        return redirect(url_for('admin.add_class'))
+    return render_template('admin/add_class.html', title='Add Class', form=form)
+
+#View student class
+@admin.route('/view_class') 
+@login_required
+@admin_required
+def view_class():
+    studentclasses = StudentClass.query.all()
+    return render_template('admin/view_class.html', title='All Classes Page', studentclasses=studentclasses)
+
+
+#Edit Student class
+@admin.route('/edit_class/<int:studentclass_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_class(studentclass_id):
+    form = EditStudentClassForm()
+    studentclass = StudentClass.query.filter_by(id=studentclass_id).first_or_404()
+    #Update studentclass details
+    if form.validate_on_submit():
+        studentclass.name = form.studentclass.data
+        #Commit new changes
+        db.session.commit()
+        flash('Class has been updated successfully', 'success')
+        return redirect(url_for('admin.edit_class', studentclass_id=studentclass.id))
+    form.studentclass.data = studentclass.name
+    return render_template('admin/edit_class.html', title='Edit Class Page', studentclass=studentclass, form=form)
+
+#Delete Student class
+@admin.route('/delete_class/<int:studentclass_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_class(studentclass_id):
+    studentclass = StudentClass.query.filter_by(id=studentclass_id).first_or_404()
+    #Delete studentclass
+    if request.method == "POST":
+        db.session.delete(studentclass)
+        #Commit new changes
+        db.session.commit()
+        flash('Class has been deleted successfully', 'success')
+        return redirect(url_for('admin.view_class')) 

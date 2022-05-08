@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, TextAreaField, 
                      SubmitField, EmailField, HiddenField)
 from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
-from app.models import User, Course, Department
+from app.models import User, Course, Department, StudentClass
 
 #Create Student Admission Form
 class StudentAdmissionForm(FlaskForm):
@@ -210,3 +210,24 @@ class EditDepartmentForm(FlaskForm):
     """def validate_departmentname(self, field):
         if department.query.filter_by(name=field.data).first():
             raise ValidationError('Department name already exits.')"""
+            
+#Add Deparment form
+class AddStudentClassForm(FlaskForm):
+    studentclass = StringField('Class', validators=[InputRequired(message="Please enter a class")])
+    submit = SubmitField('Add Class')
+    
+    
+    def validate_studentclass(self, field):
+        if StudentClass.query.filter_by(name=field.data).first():
+            raise ValidationError('class already exits.')
+        
+#Edit studentclass form
+class EditStudentClassForm(FlaskForm):
+    studentclass = StringField('Class')
+    submit = SubmitField('Edit class')
+    
+    """def validate_studentclassname(self, field):
+        if studentclass.query.filter_by(name=field.data).first():
+            raise ValidationError('Class already exits.')"""
+
+
