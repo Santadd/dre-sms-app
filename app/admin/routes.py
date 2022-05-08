@@ -139,8 +139,7 @@ def add_teacher():
 
 #Add Users
 @admin.route('/register_user', methods=["GET", "POST"])
-@login_required
-@admin_required
+
 def register_user():
     form = UserRegistrationForm()
     if form.validate_on_submit():
