@@ -149,21 +149,16 @@
                         <a href="{{ url_for('teacher.view_departments') }}">
                             <i class="mdi mdi-office-building"></i><span class="nav-text">View Departments</span>
                         </a>
-                    </li>
+                    </li>                  
                     <li class="mega-menu mega-menu-lg">
-                        <a href="#">
-                            <i class="mdi mdi-school"></i><span class="nav-text">My Students</span>
-                        </a>
-                    </li>                    
-                    <li class="mega-menu mega-menu-lg">
-                        <a href="#">
+                        <a href="{{ url_for('teacher.result_page') }}">
                             <i class="mdi mdi-clipboard-text"></i><span class="nav-text">Exam Results</span>
                         </a>
                     </li>
                     
                     <li class="nav-label">Management</li>
                     <li class="mega-menu mega-menu-lg">
-                        <a class="" href="javascript:void()">
+                        <a class="" href="{{ url_for('teacher.salary_page') }}">
                             <i class="mdi mdi-cash-multiple"></i><span class="nav-text">Income</span>
                         </a>
                     </li>

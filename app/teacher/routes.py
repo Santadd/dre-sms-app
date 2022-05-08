@@ -2,7 +2,7 @@ from flask import redirect, render_template, url_for, flash, request
 from app import db
 from flask_login import login_required, current_user
 from app.teacher import teacher
-from app.models import Department, Teacher
+from app.models import Department, Teacher, Student
 
 #Teacher's Homepage
 @teacher.route('/teacher_dashboard')
@@ -10,8 +10,10 @@ from app.models import Department, Teacher
 def teacher_dashboard():
     no_of_departments = Department.query.count()
     no_of_teachers = Teacher.query.count()
+    no_of_students = Student.query.count()
     return render_template('teacher/teacher_dashboard.html', title='My Dashboard',
-                           no_of_departments=no_of_departments, no_of_teachers=no_of_teachers)
+                           no_of_departments=no_of_departments, no_of_teachers=no_of_teachers,
+                           no_of_students=no_of_students)
 
 #Teachers Profile page
 @teacher.route('/profile_page', methods=['GET', 'POST'])
@@ -41,3 +43,16 @@ def view_departments():
 @login_required
 def event_page():
     return render_template('teacher/events.html', title='Events Page')
+
+#View Salary
+@teacher.route('/salary')
+@login_required
+def salary_page():
+    return render_template('teacher/salary.html', title='Salary Page')
+
+#View Results
+@teacher.route('/results')
+@login_required
+def result_page():
+    students = Student.query.all()
+    return render_template('teacher/results.html', title='Results Page', students=students)

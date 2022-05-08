@@ -25,7 +25,7 @@ class Config:
 #Define the type of configuration for the app(Testing, Development, and Production)
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get('JAWSDB_URL') or \
                             'mysql+pymysql://root:newpasssql@localhost/dre-sms'
     
 class TestingConfig(Config):
