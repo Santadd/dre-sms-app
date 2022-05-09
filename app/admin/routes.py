@@ -210,9 +210,9 @@ def students_list():
 @login_required
 @admin_required
 def edit_student(student_id):
-    form = EditStudentForm()
     
     student = Student.query.filter_by(student_id=student_id).first_or_404()
+    form = EditStudentForm(user=student)
     #Update Student Details if form is submitted
     if form.validate_on_submit():
         #Update password if new password is sumbitted
@@ -326,9 +326,9 @@ def teachers_list():
 @login_required
 @admin_required
 def edit_teacher(teacher_id):
-    form = EditTeacherForm()
     
     teacher = Teacher.query.filter_by(teacher_id=teacher_id).first_or_404()
+    form = EditTeacherForm(user=teacher)
     #Update Teacher Details if form is submitted
     if form.validate_on_submit():
         #Update password if new password is sumbitted
@@ -405,9 +405,9 @@ def view_users():
 @login_required
 @admin_required
 def edit_user(user_id):
-    form = EditUserForm()
     
     user = User.query.get_or_404(user_id)
+    form = EditUserForm(user=user)
     #Update user Details if form is submitted
     if form.validate_on_submit():
         #Update password if new password is sumbitted
@@ -506,8 +506,8 @@ def view_courses():
 @login_required
 @admin_required
 def edit_course(course_id):
-    form = EditCourseForm()
     course = Course.query.filter_by(id=course_id).first_or_404()
+    form = EditCourseForm(coursename=course) 
     #Update course details
     if form.validate_on_submit():
         course.name = form.coursename.data
@@ -547,8 +547,8 @@ def view_departments():
 @login_required
 @admin_required
 def edit_department(department_id):
-    form = EditDepartmentForm()
     department = Department.query.filter_by(id=department_id).first_or_404()
+    form = EditDepartmentForm(departmentname=department)
     #Update department details
     if form.validate_on_submit():
         department.name = form.departmentname.data
@@ -730,8 +730,8 @@ def view_class():
 @login_required
 @admin_required
 def edit_class(studentclass_id):
-    form = EditStudentClassForm()
     studentclass = StudentClass.query.filter_by(id=studentclass_id).first_or_404()
+    form = EditStudentClassForm(studentclass=studentclass)
     #Update student class 
     if form.validate_on_submit():
         studentclass.name = form.studentclass.data

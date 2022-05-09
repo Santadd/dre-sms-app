@@ -80,7 +80,13 @@
                         <div class="card">
                             <div class="card-body widget-school-stat bg-5 rounded">
                                 <div class="text">
-                                    <h2>GHS {{ total_fees }}</h2>
+                                    <h2>GHS 
+                                        {% if not total_fees %}
+                                        0.00
+                                        {% else %}
+                                        {{ total_fees }}
+                                        {% endif %}
+                                    </h2>
                                     <p>Fee Collections</p>
                                 </div>
                                 <div class="icon">
